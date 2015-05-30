@@ -64,11 +64,6 @@ namespace quarks
 			this->nodeB = nodeB;
 		}
 
-//		Scalar Spring::getRestLength() const
-//		{
-//			return restLength;
-//		}
-
 		void Spring::setRestLength(Scalar restLength)
 		{
 			this->restLength = restLength;

@@ -39,9 +39,9 @@ namespace quarks
 		}
 		void HQAdapter::setSoftBodies(const GU_Detail* source)
 		{
-//			cout << " setSoftBodies CALLED " << endl;
 			clearSoftBodies();
 			addSoftBodies(source);
+			quarks.setClothSolverFlag(true);
 		}
 		void HQAdapter::setForces(const GU_Detail* force)
 		{
@@ -133,7 +133,6 @@ namespace quarks
 			{
 				sources::SoftBodySource* sbsPtr = new sources::SoftBodySource(softBodyDataVector[i]);
 				quarks.addSoftBody(sbsPtr);
-//				cout << "addSoftBodies CALLED" << endl;
 			}
 		}
 		void HQAdapter::clearSoftBodies()

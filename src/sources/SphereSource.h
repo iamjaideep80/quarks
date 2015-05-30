@@ -17,7 +17,6 @@ namespace quarks
 			SphereSource(Scalar rate, PosVec pos, Scalar size,Scalar lifeExpectancy);
 			virtual ~SphereSource();
 			std::vector<PosVec> requestPositions(unsigned int time);
-//			SpringMap requestSpringMap(unsigned int time);
 		private:
 			PosVec pos;
 			Scalar size;

@@ -26,7 +26,6 @@ namespace quarks
 			GA_FOR_ALL_PRIMITIVES(force,prim)
 			{
 				GA_ROAttributeRef attRef_dir = force->findNumericTuple(GA_ATTRIB_PRIMITIVE, "dir", 3, 3);
-//				forces::force_type type = (forces::force_type )getAttribScalar(force, prim, "type");
 				Scalar type = getAttribScalar(force, prim, "type");
 				Scalar amp = getAttribScalar(force, prim, "amp");
 				UT_Vector3 dir = getAttribVector(force, prim, "dir");
@@ -146,12 +145,9 @@ namespace quarks
 				{
 					GA_Offset ptoff = soupPrimPtr->getVertexOffset(i);
 					PosVec pos = softBodyGDP->getPos3(ptoff);
-//					const GEO_Point* pt = softBodyGDP->getGEOPoint(ptoff);
-//					pt->get(attRef_fixed, fixed, 0);
 					int fixed(0);
 					if (aifFixed)
 						aifFixed->get(attRef_fixed.getAttribute(), ptoff, &fixed, 1);
-//					cout << "Point " << i << "  Fix : " << fixed << endl;
 					softBodyData.insertPoint(pos, fixed);
 				}
 				for (int i = 0; i < soupPrimPtr->getPolygonCount(); i++)

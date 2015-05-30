@@ -39,7 +39,6 @@ namespace quarks
 			typedef boost::mt11213b RandGen;
 			RandGen mtRand;
 			mtRand.seed(time);
-//			mtRand.seed()
 			PointList points;
 			openvdb::tools::UniformPointScatter<PointList, RandGen> scatter(points, birthRate, mtRand);
 			scatter.operator()<openvdb::FloatGrid>(*gridPtr);
@@ -52,9 +51,5 @@ namespace quarks
 			}
 			return v;
 		}
-//		SpringMap VDB_Source::requestSpringMap(unsigned int time)
-//		{
-//			return SpringMap();
-//		}
 	} /* namespace sources */
 } /* namespace quarks */

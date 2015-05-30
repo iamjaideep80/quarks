@@ -33,20 +33,13 @@ namespace quarks
 		void SoftBodyManager::birthParticles(std::vector<Particle*> & particles,
 				std::vector<Spring*> & springs, unsigned int time)
 		{
-//			cout << "birthParticles CALLED" << endl;
-//			cout << "softBodies.size() : " << softBodies.size() << endl;
 			for (int softBodyNum = 0; softBodyNum < softBodies.size(); softBodyNum++)
 			{
-//				cout << "softBodyNum : " << softBodyNum << endl;
 				quarks::sources::SoftBodySource* srcPtr = softBodies[softBodyNum];
 				if (!srcPtr->isActive())
 					continue;
 				std::vector<PosVec> positions = srcPtr->requestPositions(time);
 				std::vector<bool> fixPoints = srcPtr->requestFixPoints(time);
-				for (int i = 0; i < fixPoints.size(); i++)
-				{
-//					cout << "Point : " << i << "  fixPoints : " << fixPoints[i] << endl;
-				}
 				std::vector<Particle*> source_particles;
 				for (int pointNum = 0; pointNum < srcPtr->getBirthRate(); pointNum++)
 				{
@@ -83,7 +76,6 @@ namespace quarks
 			p->setIsFixed(isFix);
 			p->setSoftBodySourceNum(softBodySourceNum);
 			p->setSoftBodyPointNum(softBodyPointNum);
-//			particles.push_back(p);
 			return p;
 		}
 		PosVec SoftBodyManager::getConstraintPos(int softBodyNum, int pointNum)

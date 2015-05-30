@@ -16,6 +16,7 @@ namespace quarks
 			particles.reserve(MAX_NUM_PARTICLES);
 			collision = NULL;
 			IsCollisionRegistered = false;
+			clothSolverFlag = false;
 			initializeSystem();
 		}
 		void ParticleSystem::initializeSystem()
@@ -61,7 +62,11 @@ namespace quarks
 					continue;
 				}
 
-				odeSolver.applyOde(timeStep, oldPos, oldVel, oldForce, newPos, newVel);
+				if (clothSolverFlag)
+					odeSolver.applyRK4(timeStep, oldPos, oldVel, oldForce, newPos, newVel);
+				else
+					odeSolver.applyEuler(timeStep, oldPos, oldVel, oldForce, newPos, newVel);
+
 				if (IsCollisionRegistered)
 				{
 					collision->applyCollision(oldPos, oldVel, newPos, newVel);
@@ -71,20 +76,29 @@ namespace quarks
 				partPtr->setLife(partPtr->getLife() + 1);
 			}
 		}
+
+		bool ParticleSystem::isClothSolverFlag() const
+		{
+			return clothSolverFlag;
+		}
+
+		void ParticleSystem::setClothSolverFlag(bool clothSolverFlag)
+		{
+			this->clothSolverFlag = clothSolverFlag;
+		}
+
 		void ParticleSystem::killOldParticles()
 		{
 			for (int i = 0; i < particles.size(); i++)
 			{
 				if (particles[i] == NULL)
 				{
-//					break;
 					continue;
 				}
 				if (particles[i]->getLife() > particles[i]->getLifeExpectany())
 				{
 					delete particles[i];
 					particles[i] = NULL;
-//					particles.erase(particles.begin() + i);
 				}
 			}
 		}

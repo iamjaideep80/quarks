@@ -21,7 +21,6 @@ namespace quarks
 			VDB_Source(Scalar rate, openvdb::FloatGrid::Ptr ptr,Scalar lifeExpectancy);
 			virtual ~VDB_Source();
 			std::vector<PosVec> requestPositions(unsigned int time);
-//			SpringMap requestSpringMap(unsigned int time);
 		private:
 			openvdb::FloatGrid::Ptr gridPtr;
 		};

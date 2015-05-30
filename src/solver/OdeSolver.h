@@ -20,8 +20,10 @@ namespace quarks
 		public:
 			OdeSolver();
 			virtual ~OdeSolver();
-			void applyOde(const Scalar timeStep, const PosVec& oldPos, const DirVec& oldVel,
+			void applyRK4(const Scalar timeStep, const PosVec& oldPos, const DirVec& oldVel,
 					const DirVec& oldForce, PosVec& newPos, DirVec& newVel);
+			void applyEuler(const Scalar timeStep, const PosVec& oldPos, const DirVec& oldVel,
+								const DirVec& oldForce, PosVec& newPos, DirVec& newVel);
 		};
 
 	} /* namespace solver */

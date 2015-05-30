@@ -36,7 +36,6 @@ namespace quarks
 				source = new quarks::sources::VDB_Source(rate, ptr, lifeExpectancy);
 				break;
 			default:
-//				std::cout << "Type Default" << std::endl;
 				source = new quarks::sources::SphereSource(rate, pos, size, lifeExpectancy);
 				break;
 			}

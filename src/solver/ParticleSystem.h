@@ -63,6 +63,10 @@ namespace quarks
 				collision = coll;
 				IsCollisionRegistered = true;
 			}
+
+			bool isClothSolverFlag() const;
+			void setClothSolverFlag(bool clothSolverFlag);
+
 		private:
 			std::vector<Particle*> particles;
 			std::vector<Spring*> springs;
@@ -74,6 +78,7 @@ namespace quarks
 			SourceManager sourceManager;
 			ForceManager forceManager;
 			SoftBodyManager softBodyManager;
+			bool clothSolverFlag;
 		};
 	}
 } /* namespace quarks */

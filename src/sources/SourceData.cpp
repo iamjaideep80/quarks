@@ -82,25 +82,5 @@ namespace quarks
 		{
 			this->type = type;
 		}
-//		Scalar SourceData::getDampingConstant() const
-//		{
-//			return dampingConstant;
-//		}
-//
-//		void SourceData::setDampingConstant(Scalar dampingConstant)
-//		{
-//			this->dampingConstant = dampingConstant;
-//		}
-//
-//		Scalar SourceData::getSpringConstant() const
-//		{
-//			return springConstant;
-//		}
-//
-//		void SourceData::setSpringConstant(Scalar springConstant)
-//		{
-//			this->springConstant = springConstant;
-//		}
-
 	} /* namespace sources */
 } /* namespace quarks */

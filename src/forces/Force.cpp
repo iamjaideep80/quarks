@@ -17,8 +17,5 @@ namespace quarks
 		{
 			// TODO Auto-generated destructor stub
 		}
-//DirVec Force::calculateFoce(PosVec pos, DirVec vel) {
-//	return pos;
-//}
 	}
 } /* namespace quarks */

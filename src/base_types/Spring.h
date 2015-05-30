@@ -25,7 +25,6 @@ namespace quarks
 			void setNodeA(Particle* nodeA);
 			Particle* getNodeB() const;
 			void setNodeB(Particle* nodeB);
-//			Scalar getRestLength() const;
 			void setRestLength(Scalar restLength);
 			Scalar getSpringConstant() const;
 			void setSpringConstant(Scalar springConstant);

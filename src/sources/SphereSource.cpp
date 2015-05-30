@@ -42,9 +42,5 @@ namespace quarks
 			}
 			return v;
 		}
-//		SpringMap SphereSource::requestSpringMap(unsigned int time)
-//		{
-//			return SpringMap();
-//		}
 	} /* namespace sources */
 } /* namespace quarks */

@@ -39,10 +39,6 @@ namespace quarks
 			void setSize(Scalar size);
 			sourceType getType() const;
 			void setType(sourceType type);
-//			Scalar getDampingConstant() const;
-//			void setDampingConstant(Scalar dampingConstant);
-//			Scalar getSpringConstant() const;
-//			void setSpringConstant(Scalar springConstant);
 
 		private:
 			sourceType type;
@@ -51,8 +47,6 @@ namespace quarks
 			Scalar size;
 			Scalar lifeExpectancy;
 			openvdb::FloatGrid::Ptr gridPtr;
-//			Scalar springConstant;
-//			Scalar dampingConstant;
 		};
 		typedef std::vector<SourceData> SourceDataVector;
 	} /* namespace sources */

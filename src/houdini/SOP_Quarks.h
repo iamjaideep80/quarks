@@ -34,10 +34,8 @@ namespace HDK_Sample
 		}
 		float SIM_TIME_SCALE()
 		{
-//		FLT_PARM("sim_time_scale", 0, 0, 0)
 			return evalFloat("sim_time_scale", 0, 0);
 		}
-//    GEO_PrimParticle	*particlePrimPtr;
 		fpreal myLastCookTime;	// Last cooked time
 		static int *myOffsets;
 		quarks::houdini::HQAdapter adapter;
