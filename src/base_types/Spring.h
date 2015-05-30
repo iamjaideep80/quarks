@@ -21,7 +21,6 @@ namespace quarks
 					Scalar dampingConstant);
 			virtual ~Spring();
 			void calculateForce(DirVec& forceA, DirVec& forceB);
-			void calculateForceTmp(DirVec& forceA, DirVec& forceB);
 			Particle* getNodeA() const;
 			void setNodeA(Particle* nodeA);
 			Particle* getNodeB() const;

@@ -34,6 +34,8 @@ namespace quarks
 		{
 			for (int i = 0; i < particles.size(); i++)
 			{
+				if(particles[i] == NULL)
+					continue;
 				DirVec sumForce(0, 0, 0);
 				for (int j = 0; j < forces.size(); j++)
 				{

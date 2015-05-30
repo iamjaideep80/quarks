@@ -13,6 +13,7 @@ namespace quarks
 	{
 		ParticleSystem::ParticleSystem()
 		{
+			particles.reserve(MAX_NUM_PARTICLES);
 			collision = NULL;
 			IsCollisionRegistered = false;
 			initializeSystem();
@@ -25,16 +26,16 @@ namespace quarks
 			}
 			particles.clear();
 			springs.clear();
-			time = 0;
+			steps = 0;
 		}
 		void ParticleSystem::stepForward(Scalar timeStep)
 		{
-			sourceManager.birthParticles(particles, time);
-			softBodyManager.birthParticles(particles, springs, time);
+			sourceManager.birthParticles(particles, steps);
+			softBodyManager.birthParticles(particles, springs, steps);
 			forceManager.accumulateForces(particles, springs);
 			solveStep(timeStep);
 			killOldParticles();
-			time++;
+			steps++;
 		}
 		void ParticleSystem::solveStep(Scalar timeStep)
 		{
@@ -43,7 +44,7 @@ namespace quarks
 				Particle* partPtr = particles[i];
 				if (partPtr == NULL)
 				{
-					break;
+					continue;
 				}
 				PosVec oldPos = partPtr->getPosition();
 				DirVec oldVel = partPtr->getVelocity();
@@ -68,13 +69,6 @@ namespace quarks
 				partPtr->setPosition(newPos);
 				partPtr->setVelocity(newVel);
 				partPtr->setLife(partPtr->getLife() + 1);
-
-//				if ((i == 0) || (i == 39))
-//				{
-//					particles[i]->setPosition(oldPos);
-//					particles[i]->setVelocity(oldVel);
-//				}
-
 			}
 		}
 		void ParticleSystem::killOldParticles()
@@ -83,12 +77,14 @@ namespace quarks
 			{
 				if (particles[i] == NULL)
 				{
-					break;
+//					break;
+					continue;
 				}
 				if (particles[i]->getLife() > particles[i]->getLifeExpectany())
 				{
 					delete particles[i];
-					particles.erase(particles.begin() + i);
+					particles[i] = NULL;
+//					particles.erase(particles.begin() + i);
 				}
 			}
 		}

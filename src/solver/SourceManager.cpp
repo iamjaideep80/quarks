@@ -36,7 +36,7 @@ namespace quarks
 			{
 				quarks::sources::Source* srcPtr = sources[i];
 				std::vector<PosVec> positions = srcPtr->requestPositions(time);
-				std::vector<Particle*> source_particles;
+//				std::vector<Particle*> source_particles;
 				for (int j = 0; j < srcPtr->getBirthRate(); j++)
 				{
 					PosVec initPos(positions[j][0], positions[j][1], positions[j][2]);
@@ -44,7 +44,7 @@ namespace quarks
 					Scalar initLifeExpectancy = srcPtr->getLifeExpectancy();
 					Particle* part = birthSingleParticle(initPos, initVel, initLifeExpectancy);
 					particles.push_back(part);
-					source_particles.push_back(part);
+//					source_particles.push_back(part);
 				}
 			}
 		}

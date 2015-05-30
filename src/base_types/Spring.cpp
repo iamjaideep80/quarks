@@ -43,17 +43,6 @@ namespace quarks
 			forceA = springForceA + dampingForceA;
 			forceB = -forceA;
 		}
-		void Spring::calculateForceTmp(DirVec& forceA, DirVec& forceB)
-		{
-//			PosVec posA = nodeA->getPosition();
-			PosVec posA(0, 0, 0);
-			PosVec posB = nodeB->getPosition();
-			DirVec vecBA = posA - posB;
-			DirVec vecAB = posB - posA;
-			Scalar intensity = -1 * springConstant * (restLength - vecAB.length());
-			forceA = intensity * vecAB;
-			forceB = intensity * vecBA;
-		}
 
 		Particle* Spring::getNodeA() const
 		{

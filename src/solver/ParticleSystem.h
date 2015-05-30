@@ -16,6 +16,7 @@ namespace quarks
 {
 	namespace solver
 	{
+		const int MAX_NUM_PARTICLES = 1000000;
 		class ParticleSystem
 		{
 		public:
@@ -69,7 +70,7 @@ namespace quarks
 			bool IsCollisionRegistered;
 			void solveStep(Scalar timeStep);
 			void killOldParticles();
-			unsigned int time;
+			unsigned int steps;
 			SourceManager sourceManager;
 			ForceManager forceManager;
 			SoftBodyManager softBodyManager;

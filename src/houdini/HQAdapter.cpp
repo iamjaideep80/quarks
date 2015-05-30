@@ -78,6 +78,8 @@ namespace quarks
 			for (GA_Index i = 0; i < numParticles; i++)
 			{
 				Particle* particle = quarks.getParticle(i);
+				if (particle == NULL)
+					continue;
 				GA_Offset ptoff = particlePrimPtr->giveBirth();
 				UT_Vector3 pos = particle->getPosition();
 				particlePrimPtr->getDetail().setPos3(ptoff, pos);
