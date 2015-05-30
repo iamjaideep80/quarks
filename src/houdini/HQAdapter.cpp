@@ -65,12 +65,8 @@ namespace quarks
 				quarks.stepForward(1 / (fps * float(subSteps)));
 			}
 		}
-		void HQAdapter::syncHoudini(GU_Detail* gdp, fpreal fps)
+		void HQAdapter::syncHoudini(fpreal fps)
 		{
-			GEO_PrimParticle* particlePrimPtr = (GEO_PrimParticle*) (gdp->appendPrimitive(GEO_PRIMPART));
-			GA_RWAttributeRef idRef = gdp->addIntTuple(GA_ATTRIB_POINT, "id", 1);
-			GA_RWAttributeRef lifeRef = gdp->addFloatTuple(GA_ATTRIB_POINT, "life", 2);
-			GA_RWAttributeRef velRef = gdp->addFloatTuple(GA_ATTRIB_POINT, "v", 3);
 			const GA_AIFTuple* idRefTuple = idRef.getAIFTuple();
 			const GA_AIFTuple* lifeRefTuple = lifeRef.getAIFTuple();
 			const GA_AIFTuple* velRefTuple = velRef.getAIFTuple();
@@ -78,9 +74,26 @@ namespace quarks
 			for (GA_Index i = 0; i < numParticles; i++)
 			{
 				Particle* particle = quarks.getParticle(i);
+				GA_Offset ptoff;
+				int numHoudiniParticles = particlePrimPtr->getNumParticles();
 				if (particle == NULL)
+				{
+//					if (i < numHoudiniParticles)
+//					{
+//						ptoff = particlePrimPtr->getPointOffset(i);
+//						particlePrimPtr->deleteParticleByPoint(ptoff);
+//					}
 					continue;
-				GA_Offset ptoff = particlePrimPtr->giveBirth();
+				}
+				if (particlePrimPtr->getNumParticles() < (i + 1))
+				{
+					ptoff = particlePrimPtr->giveBirth();
+				}
+				else
+				{
+					ptoff = particlePrimPtr->getPointOffset(i);
+				}
+
 				UT_Vector3 pos = particle->getPosition();
 				particlePrimPtr->getDetail().setPos3(ptoff, pos);
 				UT_Vector2 life(particle->getLife() / fps, particle->getLifeExpectany() / fps);
@@ -104,6 +117,16 @@ namespace quarks
 				quarks.addForce(force);
 			}
 		}
+
+		void HQAdapter::setGdp(GU_Detail* gdpInput)
+		{
+			gdp = gdpInput;
+			particlePrimPtr = (GEO_PrimParticle*) (gdp->appendPrimitive(GEO_PRIMPART));
+			idRef = gdp->addIntTuple(GA_ATTRIB_POINT, "id", 1);
+			lifeRef = gdp->addFloatTuple(GA_ATTRIB_POINT, "life", 2);
+			velRef = gdp->addFloatTuple(GA_ATTRIB_POINT, "v", 3);
+		}
+
 		void HQAdapter::clearForces()
 		{
 			quarks.clearForces();

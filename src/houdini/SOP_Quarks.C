@@ -62,6 +62,7 @@ SOP_Quarks::~SOP_Quarks()
 }
 void SOP_Quarks::initSystem()
 {
+	adapter.setGdp(gdp);
 	adapter.initializeSystem();
 	if (collisionGDP)
 	{
@@ -92,7 +93,6 @@ OP_ERROR SOP_Quarks::cookMySop(OP_Context &context)
 //	boost::timer::auto_cpu_timer t;
 	fpreal reset, currframe;
 	CH_Manager *chman;
-	gdp->clearAndDestroy();
 	if (lockInputs(context) >= UT_ERROR_ABORT)
 		return error();
 	OP_Node::flags().timeDep = 1;
@@ -105,6 +105,7 @@ OP_ERROR SOP_Quarks::cookMySop(OP_Context &context)
 	reset = RESET();
 	if (currframe <= reset)
 	{
+		gdp->clearAndDestroy();
 		myLastCookTime = reset;
 		initSystem();
 	}
@@ -115,7 +116,7 @@ OP_ERROR SOP_Quarks::cookMySop(OP_Context &context)
 		myLastCookTime += 1;
 	}
 	fpreal fps = OPgetDirector()->getChannelManager()->getSamplesPerSec();
-	adapter.syncHoudini(gdp, fps / SIM_TIME_SCALE());
+	adapter.syncHoudini(fps / SIM_TIME_SCALE());
 	unlockInputs();
 	return error();
 }

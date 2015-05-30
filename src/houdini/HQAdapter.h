@@ -24,8 +24,10 @@ namespace quarks
 			void setSoftBodies(const GU_Detail* source);
 			void setForces(const GU_Detail* force);
 			void setCollisions(const GU_Detail* collision);
-			void stepForward(GU_Detail* gdp, fpreal fps,int subSteps);
-			void syncHoudini(GU_Detail* gdp, fpreal fps);
+			void stepForward(GU_Detail* gdp, fpreal fps, int subSteps);
+			void syncHoudini(fpreal fps);
+			void setGdp(GU_Detail* gdpInput);
+
 		private:
 			quarks::solver::ParticleSystem quarks;
 			void addSources(const GU_Detail* source);
@@ -34,6 +36,11 @@ namespace quarks
 			void clearSoftBodies();
 			void addForces(const GU_Detail* force);
 			void clearForces();
+			GEO_PrimParticle* particlePrimPtr;
+			GU_Detail* gdp;
+			GA_RWAttributeRef idRef;
+			GA_RWAttributeRef lifeRef;
+			GA_RWAttributeRef velRef;
 		};
 	} /* namespace houdini */
 } /* namespace quarks */
