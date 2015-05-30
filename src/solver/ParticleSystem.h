@@ -72,8 +72,9 @@ namespace quarks
 			std::vector<Spring*> springs;
 			collisions::Collision* collision;
 			bool IsCollisionRegistered;
-			void solveStep(Scalar timeStep);
-			void killOldParticles();
+			void theadedOperation(Scalar timeStep);
+			void solveStep(int threadIndex, int numThreads, Scalar timeStep);
+			void killOldParticles(int threadIndex, int numThreads);
 			unsigned int steps;
 			SourceManager sourceManager;
 			ForceManager forceManager;

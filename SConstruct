@@ -1,5 +1,5 @@
 
-release_env = Environment(CCFLAGS = ['-O2','-DRENDER_INFO'])
+release_env = Environment(CCFLAGS = ['-O2','-DRENDER_INFO','-std=c++11'])
 #debug_env = release_env.Clone(CCFLAGS = ['-g'])
 #debug_env = release_env.Clone(CCFLAGS = ['-g','-pg'],LINKFLAGS=['-g','-pg'])
 debug_env = release_env.Clone()

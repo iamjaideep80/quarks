@@ -5,6 +5,8 @@
 #include <openvdb/math/Operators.h>
 #include <openvdb/math/FiniteDifference.h>
 #include "OdeSolver.h"
+#include <thread>
+#include <math.h>
 typedef CGAL::Cartesian_d<double> Kd;
 typedef Kd::Point_d Point;
 namespace quarks
@@ -29,18 +31,56 @@ namespace quarks
 			springs.clear();
 			steps = 0;
 		}
+		bool ParticleSystem::isClothSolverFlag() const
+		{
+			return clothSolverFlag;
+		}
+
+		void ParticleSystem::setClothSolverFlag(bool clothSolverFlag)
+		{
+			this->clothSolverFlag = clothSolverFlag;
+		}
+
 		void ParticleSystem::stepForward(Scalar timeStep)
 		{
 			sourceManager.birthParticles(particles, steps);
 			softBodyManager.birthParticles(particles, springs, steps);
 			forceManager.accumulateForces(particles, springs);
-			solveStep(timeStep);
-			killOldParticles();
+			theadedOperation(timeStep);
 			steps++;
 		}
-		void ParticleSystem::solveStep(Scalar timeStep)
+
+		void ParticleSystem::theadedOperation(Scalar timeStep)
 		{
-			for (int i = 0; i < particles.size(); i++)
+			int numOfThreads = std::thread::hardware_concurrency() - 1;
+
+			std::vector<std::thread> threadsA;
+			for (unsigned i = 0; i < numOfThreads; i++)
+			{
+				threadsA.push_back(
+						std::thread(&ParticleSystem::solveStep, this, i, numOfThreads,
+									timeStep));
+			}
+			for (auto& thread : threadsA)
+			{
+				thread.join();
+			}
+
+			std::vector<std::thread> threadsB;
+			for (unsigned i = 0; i < numOfThreads; i++)
+			{
+				threadsB.push_back(
+						std::thread(&ParticleSystem::killOldParticles, this, i, numOfThreads));
+			}
+			for (auto& thread : threadsB)
+			{
+				thread.join();
+			}
+		}
+
+		void ParticleSystem::solveStep(int threadIndex, int numThreads, Scalar timeStep)
+		{
+			for (int i = threadIndex; i < particles.size(); i += numThreads)
 			{
 				Particle* partPtr = particles[i];
 				if (partPtr == NULL)
@@ -77,27 +117,18 @@ namespace quarks
 			}
 		}
 
-		bool ParticleSystem::isClothSolverFlag() const
+		void ParticleSystem::killOldParticles(int threadIndex, int numThreads)
 		{
-			return clothSolverFlag;
-		}
-
-		void ParticleSystem::setClothSolverFlag(bool clothSolverFlag)
-		{
-			this->clothSolverFlag = clothSolverFlag;
-		}
-
-		void ParticleSystem::killOldParticles()
-		{
-			for (int i = 0; i < particles.size(); i++)
+			for (int i = threadIndex; i < particles.size(); i += numThreads)
 			{
-				if (particles[i] == NULL)
+				Particle* partPtr = particles[i];
+				if (partPtr == NULL)
 				{
 					continue;
 				}
-				if (particles[i]->getLife() > particles[i]->getLifeExpectany())
+				if (partPtr->getLife() > partPtr->getLifeExpectany())
 				{
-					delete particles[i];
+					delete partPtr;
 					particles[i] = NULL;
 				}
 			}
