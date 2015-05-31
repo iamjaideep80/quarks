@@ -28,6 +28,10 @@ namespace quarks
 				delete particles[i];
 			}
 			particles.clear();
+			for (int i = 0; i < springs.size(); i++)
+			{
+				delete springs[i];
+			}
 			springs.clear();
 			steps = 0;
 		}

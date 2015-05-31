@@ -23,6 +23,7 @@ namespace quarks
 			ParticleSystem();
 			virtual ~ParticleSystem()
 			{
+				initializeSystem();
 			}
 			int getNumParticles()
 			{

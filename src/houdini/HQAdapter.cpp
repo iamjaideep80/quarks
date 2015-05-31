@@ -75,14 +75,8 @@ namespace quarks
 			{
 				Particle* particle = quarks.getParticle(i);
 				GA_Offset ptoff;
-				int numHoudiniParticles = particlePrimPtr->getNumParticles();
 				if (particle == NULL)
 				{
-//					if (i < numHoudiniParticles)
-//					{
-//						ptoff = particlePrimPtr->getPointOffset(i);
-//						particlePrimPtr->deleteParticleByPoint(ptoff);
-//					}
 					continue;
 				}
 				if (particlePrimPtr->getNumParticles() < (i + 1))
