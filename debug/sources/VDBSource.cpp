@@ -40,7 +40,7 @@ namespace quarks
 			RandGen mtRand;
 			mtRand.seed(time);
 			PointList points;
-			openvdb::tools::UniformPointScatter<PointList, RandGen> scatter(points, birthRate, mtRand);
+			openvdb::tools::UniformPointScatter<PointList, RandGen> scatter(points, (float)birthRate, mtRand);
 			scatter.operator()<openvdb::FloatGrid>(*gridPtr);
 			std::vector<PosVec> v;
 			v.reserve(birthRate);

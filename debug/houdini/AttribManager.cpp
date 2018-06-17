@@ -22,7 +22,7 @@ namespace quarks
 		}
 		void AttribManager::extractForceInfo(const GU_Detail* force, forces::ForceDataVector& forceDataVec)
 		{
-			GEO_Primitive* prim;
+			const GEO_Primitive* prim;
 			GA_FOR_ALL_PRIMITIVES(force,prim)
 			{
 				GA_ROAttributeRef attRef_dir = force->findNumericTuple(GA_ATTRIB_PRIMITIVE, "dir", 3, 3);
@@ -43,7 +43,7 @@ namespace quarks
 		void AttribManager::extractCollisionInfo(const GU_Detail* collision,
 				collisions::CollisionDataVector& collisionDataVec)
 		{
-			GEO_Primitive* prim;
+			const GEO_Primitive* prim;
 			GA_FOR_ALL_PRIMITIVES(collision,prim)
 			{
 				GU_PrimVDB* vdb_prim = (GU_PrimVDB*) prim;
@@ -66,41 +66,40 @@ namespace quarks
 		void AttribManager::extractSourceInfo(const GU_Detail* source,
 				sources::SourceDataVector& sourceDataVec)
 		{
-			GEO_Primitive* prim;
+			const GEO_Primitive* prim;
 			GA_FOR_ALL_PRIMITIVES(source,prim)
 			{
-				GA_ROAttributeRef attRef_type = source->findNumericTuple(GA_ATTRIB_PRIMITIVE, "type", 1, 1);
-				GA_ROAttributeRef attRef_rate = source->findNumericTuple(GA_ATTRIB_PRIMITIVE, "rate", 1, 1);
-				GA_ROAttributeRef attRef_size = source->findNumericTuple(GA_ATTRIB_PRIMITIVE, "size", 1, 1);
-				GA_ROAttributeRef attRef_pos = source->findNumericTuple(GA_ATTRIB_PRIMITIVE, "pos", 3, 3);
-				GA_ROAttributeRef attRef_lifeExpectancy = source->findNumericTuple(GA_ATTRIB_PRIMITIVE,
-																					"lifeExpectancy", 1, 1);
-				GA_ROAttributeRef attRef_spring_constant = source->findNumericTuple(GA_ATTRIB_PRIMITIVE,
-																					"spring_constant", 1, 1);
-				GA_ROAttributeRef attRef_damping_constant = source->findNumericTuple(GA_ATTRIB_PRIMITIVE,
-																						"damping_constant", 1,
-																						1);
+				GA_Offset primOffset = prim->getMapOffset();
+				GA_ROHandleI handle_type(source, GA_ATTRIB_PRIMITIVE, "type");
+				GA_ROHandleF handle_rate(source, GA_ATTRIB_PRIMITIVE, "rate");
+				GA_ROHandleF handle_size(source, GA_ATTRIB_PRIMITIVE, "size");
+				GA_ROHandleV3 handle_pos(source, GA_ATTRIB_PRIMITIVE, "pos");
+				GA_ROHandleF handle_lifeExpectancy(source, GA_ATTRIB_PRIMITIVE, "lifeExpectancy");
+				GA_ROHandleF handle_spring_constant(source, GA_ATTRIB_PRIMITIVE, "spring_constant");
+				GA_ROHandleF handle_damping_constant(source, GA_ATTRIB_PRIMITIVE, "damping_constant");
+
 				int type;
-				if (attRef_type.isValid())
-					prim->get(attRef_type, type, 0);
+				if (handle_type.isValid())
+					type = handle_type.get(primOffset);
 				fpreal rate(10);
-				if (attRef_rate.isValid())
-					prim->get(attRef_rate, rate, 0);
+				if (handle_rate.isValid())
+					rate = handle_rate.get(primOffset);
 				fpreal size(1);
-				if (attRef_size.isValid())
-					prim->get(attRef_size, size, 0);
+				if (handle_size.isValid())
+					size = handle_size.get(primOffset);
 				UT_Vector3 pos;
-				if (attRef_pos.isValid())
-					prim->get(attRef_pos, pos.data(), 3);
+				if (handle_pos.isValid())
+					pos = handle_pos.get(primOffset);
 				fpreal lifeExpectancy(10);
-				if (attRef_lifeExpectancy.isValid())
-					prim->get(attRef_lifeExpectancy, lifeExpectancy, 0);
+				if (handle_lifeExpectancy.isValid())
+					lifeExpectancy = handle_lifeExpectancy.get(primOffset);
 				fpreal spring_constant(10);
-				if (attRef_spring_constant.isValid())
-					prim->get(attRef_spring_constant, spring_constant, 0);
+				if (handle_spring_constant.isValid())
+					spring_constant = handle_spring_constant.get(primOffset);
 				fpreal damping_constant(10);
-				if (attRef_damping_constant.isValid())
-					prim->get(attRef_damping_constant, damping_constant, 0);
+				if (handle_damping_constant.isValid())
+					damping_constant = handle_damping_constant.get(primOffset);
+
 				openvdb::FloatGrid::Ptr gridPtr;
 				GU_PrimVDB* vdb_prim = (GU_PrimVDB*) prim;
 				if (vdb_prim && type == 1)
@@ -116,9 +115,18 @@ namespace quarks
 		void AttribManager::extractSoftBodyInfo(const GU_Detail* softBodyGDP,
 				sources::SoftBodyDataVector& softBodyDataVec)
 		{
-			GEO_Primitive* prim;
+			const GEO_Primitive* prim;
 			GA_FOR_ALL_PRIMITIVES(softBodyGDP,prim)
 			{
+				GA_Offset primOffset = prim->getMapOffset();
+				GA_ROHandleF handle_spring_constant(softBodyGDP, GA_ATTRIB_PRIMITIVE, "spring_constant");
+				GA_ROHandleF handle_damping_constant(softBodyGDP, GA_ATTRIB_PRIMITIVE, "damping_constant");
+				GA_ROHandleI handle_active(softBodyGDP, GA_ATTRIB_PRIMITIVE, "active");
+
+
+
+
+
 				GA_ROAttributeRef attRef_spring_constant = softBodyGDP->findNumericTuple(GA_ATTRIB_PRIMITIVE,
 																							"spring_constant",
 																							1, 1);
@@ -130,14 +138,14 @@ namespace quarks
 				const GA_AIFTuple *aifFixed = attRef_fixed.getAIFTuple();
 
 				fpreal spring_constant(10);
-				if (attRef_spring_constant.isValid())
-					prim->get(attRef_spring_constant, spring_constant, 0);
+				if (handle_spring_constant.isValid())
+					spring_constant = handle_spring_constant.get(primOffset);
 				fpreal damping_constant(10);
-				if (attRef_damping_constant.isValid())
-					prim->get(attRef_damping_constant, damping_constant, 0);
+				if (handle_damping_constant.isValid())
+					damping_constant = handle_damping_constant.get(primOffset);
 				int active(1);
-				if (attRef_active.isValid())
-					prim->get(attRef_active, active, 0);
+				if (handle_active.isValid())
+					active = handle_active.get(primOffset);
 				sources::SoftBodyData softBodyData(spring_constant, damping_constant, active);
 
 				GU_PrimPolySoup* soupPrimPtr = (GU_PrimPolySoup*) prim;
@@ -163,21 +171,23 @@ namespace quarks
 			}
 		}
 
-		Scalar AttribManager::getAttribScalar(const GU_Detail* gdp, GEO_Primitive* prim, char* name)
+		Scalar AttribManager::getAttribScalar(const GU_Detail* gdp, const GEO_Primitive* prim, char* name)
 		{
-			GA_ROAttributeRef attRef_type = gdp->findNumericTuple(GA_ATTRIB_PRIMITIVE, name, 1, 1);
-			Scalar val;
-			if (attRef_type.isValid())
-				prim->get(attRef_type, val, 0);
-			return val;
+			GA_Offset primOffset = prim->getMapOffset();
+			GA_ROHandleF handle(gdp, GA_ATTRIB_PRIMITIVE, name);
+			if (handle.isValid())
+				return handle.get(primOffset);
+			else
+				return 0;
 		}
-		UT_Vector3 AttribManager::getAttribVector(const GU_Detail* gdp, GEO_Primitive* prim, char* name)
+		UT_Vector3 AttribManager::getAttribVector(const GU_Detail* gdp, const GEO_Primitive* prim, char* name)
 		{
-			GA_ROAttributeRef attRef_type = gdp->findNumericTuple(GA_ATTRIB_PRIMITIVE, name, 3, 3);
-			UT_Vector3 val;
-			if (attRef_type.isValid())
-				prim->get(attRef_type, val.data(), 3);
-			return val;
+			GA_Offset primOffset = prim->getMapOffset();
+			GA_ROHandleV3 handle(gdp, GA_ATTRIB_PRIMITIVE, name);
+			if (handle.isValid())
+				return handle.get(primOffset);
+			else
+				return UT_Vector3();
 		}
 
 	} /* namespace houdini */
