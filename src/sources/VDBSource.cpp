@@ -5,6 +5,7 @@
  *      Author: jaideep
  */
 #include "VDBSource.h"
+#include <boost/random.hpp>
 namespace quarks
 {
 	namespace sources

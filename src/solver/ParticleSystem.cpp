@@ -1,4 +1,3 @@
-#include "ParticleSystem.h"
 #include <boost/numeric/odeint.hpp>
 #include <CGAL/Cartesian_d.h>
 #include <CGAL/point_generators_d.h>
@@ -7,6 +6,7 @@
 #include "OdeSolver.h"
 #include <thread>
 #include <math.h>
+#include "ParticleSystem.h"
 typedef CGAL::Cartesian_d<double> Kd;
 typedef Kd::Point_d Point;
 namespace quarks
