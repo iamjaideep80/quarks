@@ -1,0 +1,12 @@
+
+
+Import('env')
+
+lib_src = ['Particle.cpp','Spring.cpp']
+lib_target = 'base_types'
+
+env.Append(CPPPATH = ['/opt/houdini/toolkit/include/','/home/jaideep/CGAL-4.3/include'])
+env.Append(CCFLAGS='-fPIC')
+env.Append(CCFLAGS='-DSIZEOF_VOID_P=8')
+
+lib = env.StaticLibrary(source = lib_src , target = lib_target)

@@ -1,0 +1,12 @@
+
+
+Import('env')
+
+lib_src = ['Force.cpp','ForceFactory.cpp','UniformForce.cpp','DragForce.cpp','NoiseForce.cpp','VortexForce.cpp','VDBForce.cpp','ForceData.cpp']
+lib_target = 'forces'
+
+env.Append(CPPPATH = ['/opt/houdini/toolkit/include/'])
+env.Append(CCFLAGS='-fPIC')
+env.Append(CCFLAGS='-DSIZEOF_VOID_P=8')
+
+lib = env.StaticLibrary(source = lib_src , target = lib_target)
