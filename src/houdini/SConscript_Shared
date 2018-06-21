@@ -5,7 +5,7 @@ Import('env')
 lib_src = ['SOP_Quarks.C']
 lib_target = 'houdini'
 
-env.Append(CPPPATH = ['/opt/hfs13.0.582/toolkit/include/'])
+env.Append(CPPPATH = ['/opt/houdini/toolkit/include/'])
 
 env.Append(CCFLAGS=['-DVERSION=\"13.0.582\"','-D_GNU_SOURCE','-DLINUX','-DAMD64','-m64','-fPIC','-DSIZEOF_VOID_P=8','-DFBX_ENABLED=1','-DOPENCL_ENABLED=1','-DOPENVDB_ENABLED=1','-DSESI_LITTLE_ENDIAN','-DENABLE_THREADS'])
 env.Append(CCFLAGS=['-DUSE_PTHREADS','-D_REENTRANT','-D_FILE_OFFSET_BITS=64','-c','-DGCC4','-DGCC3','-Wno-deprecated','-I/opt/hfs13.0.582/toolkit/include','-Wall','-W','-Wno-parentheses'])

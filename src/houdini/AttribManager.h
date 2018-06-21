@@ -30,8 +30,8 @@ namespace quarks
 			void extractCollisionInfo(const GU_Detail* collision,
 					collisions::CollisionDataVector& collisionDataVec);
 		private:
-			Scalar getAttribScalar(const GU_Detail* gdp, GEO_Primitive* prim, char* name);
-			UT_Vector3 getAttribVector(const GU_Detail* gdp, GEO_Primitive* prim, char* name);
+			Scalar getAttribScalar(const GU_Detail* gdp, const GEO_Primitive* prim, char* name);
+			UT_Vector3 getAttribVector(const GU_Detail* gdp, const GEO_Primitive* prim, char* name);
 		};
 
 	} /* namespace houdini */

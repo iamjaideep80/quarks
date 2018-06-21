@@ -19,13 +19,14 @@ namespace quarks
 		}
 		DirVec Noise_Force::calculateFoce(PosVec pos, DirVec vel)
 		{
-			DirVec oldVel = vel;
-			oldVel.normalize();
-			DirVec randomVel(drand48() - .5, drand48() - .5, drand48() - .5);
-			randomVel.normalize();
-			DirVec newVel = 0.5 * oldVel + 0.5 * randomVel;
-			newVel.normalize();
-			return amplitude * newVel;
+//			DirVec oldVel = vel;
+//			oldVel.normalize();
+//			DirVec randomVel(drand48() - .5, drand48() - .5, drand48() - .5);
+//			randomVel.normalize();
+//			DirVec newVel = 0.5 * oldVel + 0.5 * randomVel;
+//			newVel.normalize();
+//			return amplitude * newVel;
+			return vel;
 		}
 	} /* namespace forces */
 } /* namespace quarks */
