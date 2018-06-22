@@ -1,3 +1,6 @@
 /Debug
 /debug
 .sconsign.dblite
+*.o
+*.so
+*.a
