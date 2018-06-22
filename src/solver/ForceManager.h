@@ -24,11 +24,10 @@ namespace quarks
 			virtual ~ForceManager();
 			void addForce(quarks::forces::Force* f);
 			void clearForces();
-			void accumulateForces(std::vector<Particle*> & particles, const std::vector<Spring*> & springs);
+			void accumulateForces(std::vector<Particle> & particles, const std::vector<Spring*> & springs);
 		private:
-			void accumulateExternalForces(std::vector<Particle*> & particles);
-			void accumulateInternalForces(std::vector<Particle*> & particles,
-					const std::vector<Spring*> & springs);
+			void accumulateExternalForces(std::vector<Particle> & particles);
+			void accumulateInternalForces(const std::vector<Spring*> & springs);
 			std::vector<quarks::forces::Force*> forces;
 		};
 

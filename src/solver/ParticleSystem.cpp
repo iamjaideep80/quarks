@@ -23,10 +23,6 @@ namespace quarks
 		}
 		void ParticleSystem::initializeSystem()
 		{
-			for (int i = 0; i < particles.size(); i++)
-			{
-				delete particles[i];
-			}
 			particles.clear();
 			for (int i = 0; i < springs.size(); i++)
 			{
@@ -86,23 +82,23 @@ namespace quarks
 		{
 			for (int i = threadIndex; i < particles.size(); i += numThreads)
 			{
-				Particle* partPtr = particles[i];
-				if (partPtr == NULL)
+				Particle& particle = particles[i];
+				if (particle.life > particle.lifeExpectancy)
 				{
 					continue;
 				}
-				PosVec oldPos = partPtr->position;
-				DirVec oldVel = partPtr->velocity;
-				DirVec oldForce = partPtr->force / partPtr->mass;
+				PosVec oldPos = particle.position;
+				DirVec oldVel = particle.velocity;
+				DirVec oldForce = particle.force / particle.mass;
 				PosVec newPos;
 				DirVec newVel;
 				OdeSolver odeSolver;
 
-				if (partPtr->isFixed)
+				if (particle.isFixed)
 				{
-					PosVec constraintPos = softBodyManager.getConstraintPos(partPtr->softBodySourceNum,
-																			partPtr->softBodyPointNum);
-					partPtr->position = constraintPos;
+					PosVec constraintPos = softBodyManager.getConstraintPos(particle.softBodySourceNum,
+																			particle.softBodyPointNum);
+					particle.position = constraintPos;
 					continue;
 				}
 
@@ -115,27 +111,22 @@ namespace quarks
 				{
 					collision->applyCollision(oldPos, oldVel, newPos, newVel);
 				}
-				partPtr->position = (newPos);
-				partPtr->velocity = (newVel);
-				partPtr->life = (partPtr->life + 1);
+				particle.position = (newPos);
+				particle.velocity = (newVel);
+				particle.life = (particle.life + 1);
 			}
 		}
 
 		void ParticleSystem::killOldParticles(int threadIndex, int numThreads)
 		{
-			for (int i = threadIndex; i < particles.size(); i += numThreads)
-			{
-				Particle* partPtr = particles[i];
-				if (partPtr == NULL)
-				{
-					continue;
-				}
-				if (partPtr->life > partPtr->lifeExpectancy)
-				{
-					delete partPtr;
-					particles[i] = NULL;
-				}
-			}
+//			for (int i = threadIndex; i < particles.size(); i += numThreads)
+//			{
+//				Particle& particle = particles[i];
+//				if (particle.life > particle.lifeExpectancy)
+//				{
+//					continue;
+//				}
+//			}
 		}
 	}
 } /* namespace quarks */

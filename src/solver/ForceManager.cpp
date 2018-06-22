@@ -30,24 +30,19 @@ namespace quarks
 		{
 			forces.clear();
 		}
-		void ForceManager::accumulateExternalForces(std::vector<Particle*> & particles)
+		void ForceManager::accumulateExternalForces(std::vector<Particle> & particles)
 		{
 			for (int i = 0; i < particles.size(); i++)
 			{
-				if(particles[i] == NULL)
+				Particle& particle = particles[i];
+				if(particle.life > particle.lifeExpectancy)
 					continue;
-				DirVec sumForce(0, 0, 0);
+				particle.force = 0;
 				for (int j = 0; j < forces.size(); j++)
-				{
-					DirVec force = forces[j]->calculateFoce(particles[i]->position,
-															particles[i]->velocity);
-					sumForce = sumForce + force;
-				}
-				particles[i]->force = (sumForce);
+					particle.force += forces[j]->calculateFoce(particle.position,particle.velocity);
 			}
 		}
-		void ForceManager::accumulateInternalForces(std::vector<Particle*> & particles,
-				const std::vector<Spring*> & springs)
+		void ForceManager::accumulateInternalForces(const std::vector<Spring*> & springs)
 		{
 			for (int i = 0; i < springs.size(); i++)
 			{
@@ -61,11 +56,11 @@ namespace quarks
 			}
 		}
 
-		void ForceManager::accumulateForces(std::vector<Particle*>& particles,
+		void ForceManager::accumulateForces(std::vector<Particle>& particles,
 				const std::vector<Spring*>& springs)
 		{
 			accumulateExternalForces(particles);
-			accumulateInternalForces(particles, springs);
+			accumulateInternalForces(springs);
 		}
 
 	} /* namespace solver */

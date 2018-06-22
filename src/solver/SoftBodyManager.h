@@ -24,13 +24,13 @@ namespace quarks
 		public:
 			SoftBodyManager();
 			virtual ~SoftBodyManager();
-			void birthParticles(std::vector<Particle*> & particles, std::vector<Spring*> & springs,
+			void birthParticles(std::vector<Particle> & particles, std::vector<Spring*> & springs,
 					unsigned int time);
 			void addSoftBody(quarks::sources::SoftBodySource* f);
 			void clearSoftBodies();
 			PosVec getConstraintPos(int softBodyNum, int pointNum);
 		private:
-			Particle* birthSingleParticle(PosVec intPos, DirVec intVel, Scalar initLifeExpectancy, bool isFix,
+			Particle birthSingleParticle(PosVec intPos, Scalar initLifeExpectancy, bool isFix,
 					int softBodySourceNum, int softBodyPointNum);
 			std::vector<quarks::sources::SoftBodySource*> softBodies;
 			unsigned int maxID;

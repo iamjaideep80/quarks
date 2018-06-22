@@ -4,8 +4,8 @@
 namespace quarks {
 namespace base_types {
 struct Particle {
-	Particle(Scalar in_lifeExpectancy, unsigned int in_id) :
-			id(in_id), lifeExpectancy(in_lifeExpectancy) {};
+	Particle(PosVec in_position,Scalar in_lifeExpectancy, unsigned int in_id) :
+			position(in_position),id(in_id), lifeExpectancy(in_lifeExpectancy) {};
 	PosVec position{0.0};
 	DirVec velocity{0.0};
 	Scalar mass = 10;

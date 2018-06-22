@@ -30,7 +30,7 @@ namespace quarks
 		{
 			softBodies.clear();
 		}
-		void SoftBodyManager::birthParticles(std::vector<Particle*> & particles,
+		void SoftBodyManager::birthParticles(std::vector<Particle> & particles,
 				std::vector<Spring*> & springs, unsigned int time)
 		{
 			for (int softBodyNum = 0; softBodyNum < softBodies.size(); softBodyNum++)
@@ -40,13 +40,12 @@ namespace quarks
 					continue;
 				std::vector<PosVec> positions = srcPtr->requestPositions(time);
 				std::vector<bool> fixPoints = srcPtr->requestFixPoints(time);
-				std::vector<Particle*> source_particles;
+				std::vector<Particle> source_particles;
 				for (int pointNum = 0; pointNum < srcPtr->getBirthRate(); pointNum++)
 				{
 					PosVec initPos(positions[pointNum][0], positions[pointNum][1], positions[pointNum][2]);
-					DirVec initVel(0, 0, 0);
 					Scalar initLifeExpectancy = srcPtr->getLifeExpectancy();
-					Particle* part = birthSingleParticle(initPos, initVel, initLifeExpectancy,
+					Particle part = birthSingleParticle(initPos, initLifeExpectancy,
 															fixPoints[pointNum], softBodyNum, pointNum);
 					particles.push_back(part);
 					source_particles.push_back(part);
@@ -57,25 +56,26 @@ namespace quarks
 				for (SpringMap::iterator it = springMap.begin(); it != springMap.end(); ++it)
 				{
 					std::pair<int, int> nodePair = *it;
-					Particle* nodeA = source_particles[nodePair.first];
-					Particle* nodeB = source_particles[nodePair.second];
+					Particle* nodeA = &source_particles[nodePair.first];
+					std::cout << "nodeA : " << nodeA << std::endl;
+					Particle* nodeB = &source_particles[nodePair.second];
+					std::cout << "nodeB : " << nodeB << std::endl;
 					DirVec vecAB = nodeA->position - nodeB->position;
+					std::cout << "vecAB.length() : " << vecAB.length() << std::endl;
 					Spring* spring = new Spring(nodeA, nodeB, vecAB.length(), sbSrcPtr->getSpringConstant(),
 												sbSrcPtr->getDampingConstant());
 					springs.push_back(spring);
 				}
 			}
 		}
-		Particle* SoftBodyManager::birthSingleParticle(PosVec initPos, DirVec initVel,
+		Particle SoftBodyManager::birthSingleParticle(PosVec initPos,
 				Scalar initLifeExpectancy, bool isFix, int softBodySourceNum, int softBodyPointNum)
 		{
-			Particle* p = new Particle(initLifeExpectancy, maxID);
+			Particle p(initPos,initLifeExpectancy, maxID);
 			maxID++;
-			p->position = (initPos);
-			p->velocity = (initVel);
-			p->isFixed = (isFix);
-			p->softBodySourceNum = (softBodySourceNum);
-			p->softBodyPointNum = (softBodyPointNum);
+			p.isFixed = (isFix);
+			p.softBodySourceNum = (softBodySourceNum);
+			p.softBodyPointNum = (softBodyPointNum);
 			return p;
 		}
 		PosVec SoftBodyManager::getConstraintPos(int softBodyNum, int pointNum)

@@ -30,7 +30,7 @@ namespace quarks
 				return particles.size();
 			}
 			void initializeSystem();
-			Particle* getParticle(int index)
+			const Particle& getParticle(int index)
 			{
 				return particles[index];
 			}
@@ -69,7 +69,7 @@ namespace quarks
 			void setClothSolverFlag(bool clothSolverFlag);
 
 		private:
-			std::vector<Particle*> particles;
+			std::vector<Particle> particles;
 			std::vector<Spring*> springs;
 			collisions::Collision* collision;
 			bool IsCollisionRegistered;

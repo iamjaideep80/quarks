@@ -73,9 +73,9 @@ namespace quarks
 			int numParticles = quarks.getNumParticles();
 			for (GA_Index i = 0; i < numParticles; i++)
 			{
-				Particle* particle = quarks.getParticle(i);
+				const Particle& particle = quarks.getParticle(i);
 				GA_Offset ptoff;
-				if (particle == NULL)
+				if (particle.life > particle.lifeExpectancy)
 				{
 					continue;
 				}
@@ -88,11 +88,11 @@ namespace quarks
 					ptoff = particlePrimPtr->getPointOffset(i);
 				}
 
-				UT_Vector3 pos = particle->position;
+				UT_Vector3 pos = particle.position;
 				particlePrimPtr->getDetail().setPos3(ptoff, pos);
-				UT_Vector2 life(particle->life / fps, particle->lifeExpectancy / fps);
-				UT_Vector3 vel = particle->velocity;
-				int64 idVal = particle->id;
+				UT_Vector2 life(particle.life / fps, particle.lifeExpectancy / fps);
+				UT_Vector3 vel = particle.velocity;
+				int64 idVal = particle.id;
 				idRefTuple->set(idRef.getAttribute(), ptoff, &idVal, 1);
 				lifeRefTuple->set(lifeRef.getAttribute(), ptoff, life.data(), 2);
 				velRefTuple->set(velRef.getAttribute(), ptoff, vel.data(), 3);
