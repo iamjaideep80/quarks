@@ -54,9 +54,9 @@ namespace quarks
 				Spring* spring = springs[i];
 				DirVec forceA, forceB;
 				spring->calculateForce(forceA, forceB);
-				Particle* nodeA = spring->getNodeA();
+				Particle* nodeA = spring->nodeA;
 				nodeA->force = (nodeA->force + forceA);
-				Particle* nodeB = spring->getNodeB();
+				Particle* nodeB = spring->nodeB;
 				nodeB->force = (nodeB->force + forceB);
 			}
 		}
