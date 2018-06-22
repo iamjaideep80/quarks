@@ -16,7 +16,7 @@ namespace quarks
 {
 	namespace solver
 	{
-		const int MAX_NUM_PARTICLES = 1000000;
+		const int MAX_NUM_PARTICLES = 10000000;
 		class ParticleSystem
 		{
 		public:

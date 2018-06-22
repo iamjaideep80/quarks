@@ -88,11 +88,11 @@ namespace quarks
 					ptoff = particlePrimPtr->getPointOffset(i);
 				}
 
-				UT_Vector3 pos = particle->getPosition();
+				UT_Vector3 pos = particle->position;
 				particlePrimPtr->getDetail().setPos3(ptoff, pos);
-				UT_Vector2 life(particle->getLife() / fps, particle->getLifeExpectany() / fps);
-				UT_Vector3 vel = particle->getVelocity();
-				int64 idVal = particle->getId();
+				UT_Vector2 life(particle->life / fps, particle->lifeExpectancy / fps);
+				UT_Vector3 vel = particle->velocity;
+				int64 idVal = particle->id;
 				idRefTuple->set(idRef.getAttribute(), ptoff, &idVal, 1);
 				lifeRefTuple->set(lifeRef.getAttribute(), ptoff, life.data(), 2);
 				velRefTuple->set(velRef.getAttribute(), ptoff, vel.data(), 3);

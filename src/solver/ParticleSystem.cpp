@@ -91,18 +91,18 @@ namespace quarks
 				{
 					continue;
 				}
-				PosVec oldPos = partPtr->getPosition();
-				DirVec oldVel = partPtr->getVelocity();
-				DirVec oldForce = partPtr->getForce() / partPtr->getMass();
+				PosVec oldPos = partPtr->position;
+				DirVec oldVel = partPtr->velocity;
+				DirVec oldForce = partPtr->force / partPtr->mass;
 				PosVec newPos;
 				DirVec newVel;
 				OdeSolver odeSolver;
 
-				if (partPtr->isIsFixed())
+				if (partPtr->isFixed)
 				{
-					PosVec constraintPos = softBodyManager.getConstraintPos(partPtr->getSoftBodySourceNum(),
-																			partPtr->getSoftBodyPointNum());
-					partPtr->setPosition(constraintPos);
+					PosVec constraintPos = softBodyManager.getConstraintPos(partPtr->softBodySourceNum,
+																			partPtr->softBodyPointNum);
+					partPtr->position = constraintPos;
 					continue;
 				}
 
@@ -115,9 +115,9 @@ namespace quarks
 				{
 					collision->applyCollision(oldPos, oldVel, newPos, newVel);
 				}
-				partPtr->setPosition(newPos);
-				partPtr->setVelocity(newVel);
-				partPtr->setLife(partPtr->getLife() + 1);
+				partPtr->position = (newPos);
+				partPtr->velocity = (newVel);
+				partPtr->life = (partPtr->life + 1);
 			}
 		}
 
@@ -130,7 +130,7 @@ namespace quarks
 				{
 					continue;
 				}
-				if (partPtr->getLife() > partPtr->getLifeExpectany())
+				if (partPtr->life > partPtr->lifeExpectancy)
 				{
 					delete partPtr;
 					particles[i] = NULL;

@@ -59,7 +59,7 @@ namespace quarks
 					std::pair<int, int> nodePair = *it;
 					Particle* nodeA = source_particles[nodePair.first];
 					Particle* nodeB = source_particles[nodePair.second];
-					DirVec vecAB = nodeA->getPosition() - nodeB->getPosition();
+					DirVec vecAB = nodeA->position - nodeB->position;
 					Spring* spring = new Spring(nodeA, nodeB, vecAB.length(), sbSrcPtr->getSpringConstant(),
 												sbSrcPtr->getDampingConstant());
 					springs.push_back(spring);
@@ -71,11 +71,11 @@ namespace quarks
 		{
 			Particle* p = new Particle(initLifeExpectancy, maxID);
 			maxID++;
-			p->setPosition(initPos);
-			p->setVelocity(initVel);
-			p->setIsFixed(isFix);
-			p->setSoftBodySourceNum(softBodySourceNum);
-			p->setSoftBodyPointNum(softBodyPointNum);
+			p->position = (initPos);
+			p->velocity = (initVel);
+			p->isFixed = (isFix);
+			p->softBodySourceNum = (softBodySourceNum);
+			p->softBodyPointNum = (softBodyPointNum);
 			return p;
 		}
 		PosVec SoftBodyManager::getConstraintPos(int softBodyNum, int pointNum)

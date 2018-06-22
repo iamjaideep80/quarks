@@ -2,7 +2,7 @@
 
 Import('env')
 
-lib_src = ['Particle.cpp','Spring.cpp']
+lib_src = ['Spring.cpp']
 lib_target = 'base_types'
 
 env.Append(CPPPATH = ['/opt/houdini/toolkit/include/','/home/jaideep/CGAL-4.3/include'])

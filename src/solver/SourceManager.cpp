@@ -51,8 +51,8 @@ namespace quarks
 		{
 			Particle* p = new Particle(initLifeExpectancy, maxID);
 			maxID++;
-			p->setPosition(initPos);
-			p->setVelocity(initVel);
+			p->position = (initPos);
+			p->velocity = (initVel);
 			return p;
 		}
 

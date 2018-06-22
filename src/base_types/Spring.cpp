@@ -26,14 +26,14 @@ namespace quarks
 
 		void Spring::calculateForce(DirVec& forceA, DirVec& forceB)
 		{
-			PosVec posA = nodeA->getPosition();
-			PosVec posB = nodeB->getPosition();
+			PosVec posA = nodeA->position;
+			PosVec posB = nodeB->position;
 			DirVec vecAB = posB - posA;
 			Scalar intensity = -1 * springConstant * (restLength - vecAB.length());
 			vecAB.normalize();
 			DirVec springForceA = intensity * vecAB;
-			DirVec velA = nodeA->getVelocity();
-			DirVec velB = nodeB->getVelocity();
+			DirVec velA = nodeA->velocity;
+			DirVec velB = nodeB->velocity;
 			DirVec velDiff = velA - velB;
 			DirVec dampingForceA;
 			if (1)

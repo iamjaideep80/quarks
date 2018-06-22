@@ -39,11 +39,11 @@ namespace quarks
 				DirVec sumForce(0, 0, 0);
 				for (int j = 0; j < forces.size(); j++)
 				{
-					DirVec force = forces[j]->calculateFoce(particles[i]->getPosition(),
-															particles[i]->getVelocity());
+					DirVec force = forces[j]->calculateFoce(particles[i]->position,
+															particles[i]->velocity);
 					sumForce = sumForce + force;
 				}
-				particles[i]->setForce(sumForce);
+				particles[i]->force = (sumForce);
 			}
 		}
 		void ForceManager::accumulateInternalForces(std::vector<Particle*> & particles,
@@ -55,9 +55,9 @@ namespace quarks
 				DirVec forceA, forceB;
 				spring->calculateForce(forceA, forceB);
 				Particle* nodeA = spring->getNodeA();
-				nodeA->setForce(nodeA->getForce() + forceA);
+				nodeA->force = (nodeA->force + forceA);
 				Particle* nodeB = spring->getNodeB();
-				nodeB->setForce(nodeB->getForce() + forceB);
+				nodeB->force = (nodeB->force + forceB);
 			}
 		}
 
