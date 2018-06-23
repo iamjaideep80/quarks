@@ -42,22 +42,22 @@ namespace quarks
 					particle.force += forces[j]->calculateFoce(particle.position,particle.velocity);
 			}
 		}
-		void ForceManager::accumulateInternalForces(const std::vector<Spring*> & springs)
+		void ForceManager::accumulateInternalForces(std::vector<Spring> & springs)
 		{
 			for (int i = 0; i < springs.size(); i++)
 			{
-				Spring* spring = springs[i];
+				Spring& spring = springs[i];
 				DirVec forceA, forceB;
-				spring->calculateForce(forceA, forceB);
-				Particle* nodeA = spring->nodeA;
+				spring.calculateForce(forceA, forceB);
+				Particle* nodeA = spring.nodeA;
 				nodeA->force = (nodeA->force + forceA);
-				Particle* nodeB = spring->nodeB;
+				Particle* nodeB = spring.nodeB;
 				nodeB->force = (nodeB->force + forceB);
 			}
 		}
 
 		void ForceManager::accumulateForces(std::vector<Particle>& particles,
-				const std::vector<Spring*>& springs)
+				std::vector<Spring>& springs)
 		{
 			accumulateExternalForces(particles);
 			accumulateInternalForces(springs);

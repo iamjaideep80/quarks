@@ -70,7 +70,7 @@ namespace quarks
 
 		private:
 			std::vector<Particle> particles;
-			std::vector<Spring*> springs;
+			std::vector<Spring> springs;
 			collisions::Collision* collision;
 			bool IsCollisionRegistered;
 			void theadedOperation(Scalar timeStep);

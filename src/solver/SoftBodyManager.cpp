@@ -31,7 +31,7 @@ namespace quarks
 			softBodies.clear();
 		}
 		void SoftBodyManager::birthParticles(std::vector<Particle> & particles,
-				std::vector<Spring*> & springs, unsigned int time)
+				std::vector<Spring> & springs, unsigned int time)
 		{
 			for (int softBodyNum = 0; softBodyNum < softBodies.size(); softBodyNum++)
 			{
@@ -59,9 +59,8 @@ namespace quarks
 					Particle* nodeA = source_particles[nodePair.first];
 					Particle* nodeB = source_particles[nodePair.second];
 					DirVec vecAB = nodeA->position - nodeB->position;
-					Spring* spring = new Spring(nodeA, nodeB, vecAB.length(), sbSrcPtr->getSpringConstant(),
-												sbSrcPtr->getDampingConstant());
-					springs.push_back(spring);
+					springs.emplace_back(nodeA, nodeB, vecAB.length(), sbSrcPtr->getSpringConstant(),
+							sbSrcPtr->getDampingConstant());
 				}
 			}
 		}

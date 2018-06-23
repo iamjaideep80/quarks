@@ -24,7 +24,7 @@ namespace quarks
 		public:
 			SoftBodyManager();
 			virtual ~SoftBodyManager();
-			void birthParticles(std::vector<Particle> & particles, std::vector<Spring*> & springs,
+			void birthParticles(std::vector<Particle> & particles, std::vector<Spring> & springs,
 					unsigned int time);
 			void addSoftBody(quarks::sources::SoftBodySource* f);
 			void clearSoftBodies();
