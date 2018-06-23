@@ -40,7 +40,7 @@ namespace quarks
 					continue;
 				std::vector<PosVec> positions = srcPtr->requestPositions(time);
 				std::vector<bool> fixPoints = srcPtr->requestFixPoints(time);
-				std::vector<Particle> source_particles;
+				std::vector<Particle*> source_particles;
 				for (int pointNum = 0; pointNum < srcPtr->getBirthRate(); pointNum++)
 				{
 					PosVec initPos(positions[pointNum][0], positions[pointNum][1], positions[pointNum][2]);
@@ -48,7 +48,7 @@ namespace quarks
 					Particle part = birthSingleParticle(initPos, initLifeExpectancy,
 															fixPoints[pointNum], softBodyNum, pointNum);
 					particles.push_back(part);
-					source_particles.push_back(part);
+					source_particles.push_back(&(particles.back()));
 				}
 				quarks::sources::SoftBodySource* sbSrcPtr =
 						static_cast<quarks::sources::SoftBodySource*>(srcPtr);
@@ -56,12 +56,9 @@ namespace quarks
 				for (SpringMap::iterator it = springMap.begin(); it != springMap.end(); ++it)
 				{
 					std::pair<int, int> nodePair = *it;
-					Particle* nodeA = &source_particles[nodePair.first];
-					std::cout << "nodeA : " << nodeA << std::endl;
-					Particle* nodeB = &source_particles[nodePair.second];
-					std::cout << "nodeB : " << nodeB << std::endl;
+					Particle* nodeA = source_particles[nodePair.first];
+					Particle* nodeB = source_particles[nodePair.second];
 					DirVec vecAB = nodeA->position - nodeB->position;
-					std::cout << "vecAB.length() : " << vecAB.length() << std::endl;
 					Spring* spring = new Spring(nodeA, nodeB, vecAB.length(), sbSrcPtr->getSpringConstant(),
 												sbSrcPtr->getDampingConstant());
 					springs.push_back(spring);
