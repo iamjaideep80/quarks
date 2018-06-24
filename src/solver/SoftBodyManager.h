@@ -30,8 +30,6 @@ namespace quarks
 			void clearSoftBodies();
 			PosVec getConstraintPos(int softBodyNum, int pointNum);
 		private:
-			Particle birthSingleParticle(PosVec intPos, Scalar initLifeExpectancy, bool isFix,
-					int softBodySourceNum, int softBodyPointNum);
 			std::vector<quarks::sources::SoftBodySource*> softBodies;
 			unsigned int maxID;
 			std::map<int, std::vector<Particle*> > srcMap;

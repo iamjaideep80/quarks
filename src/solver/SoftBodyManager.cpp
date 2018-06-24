@@ -45,10 +45,9 @@ namespace quarks
 				{
 					PosVec initPos(positions[pointNum][0], positions[pointNum][1], positions[pointNum][2]);
 					Scalar initLifeExpectancy = srcPtr->getLifeExpectancy();
-					Particle part = birthSingleParticle(initPos, initLifeExpectancy,
-															fixPoints[pointNum], softBodyNum, pointNum);
-					particles.push_back(part);
+					particles.emplace_back(initPos,initLifeExpectancy,maxID,fixPoints[pointNum], softBodyNum, pointNum);
 					source_particles.push_back(&(particles.back()));
+					maxID++;
 				}
 				quarks::sources::SoftBodySource* sbSrcPtr =
 						static_cast<quarks::sources::SoftBodySource*>(srcPtr);
@@ -63,16 +62,6 @@ namespace quarks
 							sbSrcPtr->getDampingConstant());
 				}
 			}
-		}
-		Particle SoftBodyManager::birthSingleParticle(PosVec initPos,
-				Scalar initLifeExpectancy, bool isFix, int softBodySourceNum, int softBodyPointNum)
-		{
-			Particle p(initPos,initLifeExpectancy, maxID);
-			maxID++;
-			p.isFixed = (isFix);
-			p.softBodySourceNum = (softBodySourceNum);
-			p.softBodyPointNum = (softBodyPointNum);
-			return p;
 		}
 		PosVec SoftBodyManager::getConstraintPos(int softBodyNum, int pointNum)
 		{
