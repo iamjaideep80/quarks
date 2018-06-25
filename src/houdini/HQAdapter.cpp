@@ -50,8 +50,7 @@ namespace quarks
 			attribManager.extractSoftBodyInfo(source, softBodyDataVector);
 			for (int i = 0; i < softBodyDataVector.size(); i++)
 			{
-				sources::SoftBodySource* sbsPtr = new sources::SoftBodySource(softBodyDataVector[i]);
-				quarks.addSoftBody(sbsPtr);
+				quarks.addSoftBody(sources::SoftBodySourcePtr(new sources::SoftBodySource(softBodyDataVector[i])));
 			}
 			quarks.setClothSolverFlag(true);
 		}

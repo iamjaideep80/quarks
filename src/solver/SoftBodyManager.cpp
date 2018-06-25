@@ -22,7 +22,7 @@ namespace quarks
 		{
 			// TODO Auto-generated destructor stub
 		}
-		void SoftBodyManager::addSoftBody(quarks::sources::SoftBodySource* f)
+		void SoftBodyManager::addSoftBody(quarks::sources::SoftBodySourcePtr f)
 		{
 			softBodies.push_back(f);
 		}
@@ -35,7 +35,7 @@ namespace quarks
 		{
 			for (int softBodyNum = 0; softBodyNum < softBodies.size(); softBodyNum++)
 			{
-				quarks::sources::SoftBodySource* srcPtr = softBodies[softBodyNum];
+				quarks::sources::SoftBodySourcePtr srcPtr = softBodies[softBodyNum];
 				if (!srcPtr->isActive())
 					continue;
 				std::vector<PosVec> positions = srcPtr->requestPositions(time);
@@ -49,17 +49,15 @@ namespace quarks
 					source_particles.push_back(&(particles.back()));
 					maxID++;
 				}
-				quarks::sources::SoftBodySource* sbSrcPtr =
-						static_cast<quarks::sources::SoftBodySource*>(srcPtr);
-				SpringMap springMap = sbSrcPtr->requestSpringMap(time);
+				SpringMap springMap = srcPtr->requestSpringMap(time);
 				for (SpringMap::iterator it = springMap.begin(); it != springMap.end(); ++it)
 				{
 					std::pair<int, int> nodePair = *it;
 					Particle* nodeA = source_particles[nodePair.first];
 					Particle* nodeB = source_particles[nodePair.second];
 					DirVec vecAB = nodeA->position - nodeB->position;
-					springs.emplace_back(nodeA, nodeB, vecAB.length(), sbSrcPtr->getSpringConstant(),
-							sbSrcPtr->getDampingConstant());
+					springs.emplace_back(nodeA, nodeB, vecAB.length(), srcPtr->getSpringConstant(),
+							srcPtr->getDampingConstant());
 				}
 			}
 		}

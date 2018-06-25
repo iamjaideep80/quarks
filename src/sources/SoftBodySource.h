@@ -42,6 +42,7 @@ namespace quarks
 			Scalar dampingConstant;
 			bool active;
 		};
+		using SoftBodySourcePtr = std::shared_ptr<SoftBodySource>;
 	} /* namespace sources */
 } /* namespace quarks */
 #endif /* SOFTBODYSOURCE_H_ */

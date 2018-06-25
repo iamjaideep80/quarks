@@ -26,11 +26,11 @@ namespace quarks
 			virtual ~SoftBodyManager();
 			void birthParticles(std::vector<Particle> & particles, std::vector<Spring> & springs,
 					unsigned int time);
-			void addSoftBody(quarks::sources::SoftBodySource* f);
+			void addSoftBody(quarks::sources::SoftBodySourcePtr f);
 			void clearSoftBodies();
 			PosVec getConstraintPos(int softBodyNum, int pointNum);
 		private:
-			std::vector<quarks::sources::SoftBodySource*> softBodies;
+			std::vector<quarks::sources::SoftBodySourcePtr> softBodies;
 			unsigned int maxID;
 			std::map<int, std::vector<Particle*> > srcMap;
 		};

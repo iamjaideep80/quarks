@@ -51,7 +51,7 @@ namespace quarks
 			{
 				sourceManager.clearSources();
 			}
-			void addSoftBody(quarks::sources::SoftBodySource* f)
+			void addSoftBody(quarks::sources::SoftBodySourcePtr f)
 			{
 				softBodyManager.addSoftBody(f);
 			}
