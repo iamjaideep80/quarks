@@ -13,10 +13,10 @@ namespace quarks
 	{
 		Collision::Collision(CollisionData collisionData)
 		{
-			gridPtr = collisionData.getGridPtr();
-			this->gainTangent = collisionData.getGainTangent();
-			this->gainNormal = collisionData.getGainNormal();
-			this->outerIsoVal = collisionData.getIsoVal();
+			gridPtr = collisionData.gridPtr;
+			this->gainTangent = collisionData.gainTangent;
+			this->gainNormal = collisionData.gainNormal;
+			this->outerIsoVal = collisionData.isoVal;
 		}
 		Collision::~Collision()
 		{

@@ -16,10 +16,17 @@ namespace quarks
 	{
 		struct Spring
 		{
-			Spring(Particle* nodeA, Particle* nodeB, Scalar restLength, Scalar springConstant,Scalar dampingConstant) :
-							nodeA(nodeA), nodeB(nodeB), restLength(restLength), springConstant(springConstant),
-									dampingConstant(dampingConstant)
-			{};
+			Spring( Particle* in_nodeA,
+					Particle* in_nodeB,
+					Scalar in_restLength,
+					Scalar in_springConstant,
+					Scalar in_dampingConstant) :
+					nodeA(in_nodeA),
+					nodeB(in_nodeB),
+					restLength(in_restLength),
+					springConstant(in_springConstant),
+					dampingConstant(in_dampingConstant)
+					{};
 			void calculateForce(DirVec& forceA, DirVec& forceB)
 			{
 				PosVec posA = nodeA->position;

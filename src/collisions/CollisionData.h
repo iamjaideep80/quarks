@@ -16,21 +16,17 @@ namespace quarks
 	namespace collisions
 	{
 
-		class CollisionData
+		struct CollisionData
 		{
-		public:
-			CollisionData(openvdb::FloatGrid::Ptr ptr, Scalar gainTangent, Scalar gainNormal, Scalar isoVal);
-			virtual ~CollisionData();
-			Scalar getGainNormal() const;
-			void setGainNormal(Scalar gainNormal);
-			Scalar getGainTangent() const;
-			void setGainTangent(Scalar gainTangent);
-			const openvdb::FloatGrid::Ptr& getGridPtr() const;
-			void setGridPtr(const openvdb::FloatGrid::Ptr& gridPtr);
-			Scalar getIsoVal() const;
-			void setIsoVal(Scalar isoVal);
-
-		private:
+			CollisionData(openvdb::FloatGrid::Ptr gridPtr,
+					Scalar gainTangent,
+					Scalar gainNormal,
+					Scalar isoVal) :
+					gridPtr(gridPtr),
+					gainTangent(gainTangent),
+					gainNormal(gainNormal),
+					isoVal(isoVal)
+					{};
 			openvdb::FloatGrid::Ptr gridPtr;
 			Scalar gainTangent;
 			Scalar gainNormal;
