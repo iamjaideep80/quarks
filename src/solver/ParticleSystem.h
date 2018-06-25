@@ -75,7 +75,6 @@ namespace quarks
 			bool IsCollisionRegistered;
 			void theadedOperation(Scalar timeStep);
 			void solveStep(int threadIndex, int numThreads, Scalar timeStep);
-			void killOldParticles(int threadIndex, int numThreads);
 			unsigned int steps;
 			SourceManager sourceManager;
 			ForceManager forceManager;

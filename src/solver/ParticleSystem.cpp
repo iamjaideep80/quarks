@@ -52,26 +52,10 @@ namespace quarks
 
 			std::vector<std::thread> threadsA;
 			for (unsigned i = 0; i < numOfThreads; i++)
-			{
-				threadsA.push_back(
-						std::thread(&ParticleSystem::solveStep, this, i, numOfThreads,
-									timeStep));
-			}
-			for (auto& thread : threadsA)
-			{
-				thread.join();
-			}
+				threadsA.push_back(std::thread(&ParticleSystem::solveStep, this, i, numOfThreads,timeStep));
 
-			std::vector<std::thread> threadsB;
-			for (unsigned i = 0; i < numOfThreads; i++)
-			{
-				threadsB.push_back(
-						std::thread(&ParticleSystem::killOldParticles, this, i, numOfThreads));
-			}
-			for (auto& thread : threadsB)
-			{
+			for (auto& thread : threadsA)
 				thread.join();
-			}
 		}
 
 		void ParticleSystem::solveStep(int threadIndex, int numThreads, Scalar timeStep)
@@ -92,9 +76,8 @@ namespace quarks
 
 				if (particle.isFixed)
 				{
-					PosVec constraintPos = softBodyManager.getConstraintPos(particle.softBodySourceNum,
+					particle.position = softBodyManager.getConstraintPos(particle.softBodySourceNum,
 																			particle.softBodyPointNum);
-					particle.position = constraintPos;
 					continue;
 				}
 
@@ -104,25 +87,12 @@ namespace quarks
 					odeSolver.applyEuler(timeStep, oldPos, oldVel, oldForce, newPos, newVel);
 
 				if (IsCollisionRegistered)
-				{
 					collision->applyCollision(oldPos, oldVel, newPos, newVel);
-				}
-				particle.position = (newPos);
-				particle.velocity = (newVel);
-				particle.life = (particle.life + 1);
-			}
-		}
 
-		void ParticleSystem::killOldParticles(int threadIndex, int numThreads)
-		{
-//			for (int i = threadIndex; i < particles.size(); i += numThreads)
-//			{
-//				Particle& particle = particles[i];
-//				if (particle.life > particle.lifeExpectancy)
-//				{
-//					continue;
-//				}
-//			}
+				particle.position = newPos;
+				particle.velocity = newVel;
+				particle.life++;
+			}
 		}
 	}
 } /* namespace quarks */
