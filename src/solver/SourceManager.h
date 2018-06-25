@@ -24,10 +24,10 @@ namespace quarks
 			SourceManager();
 			virtual ~SourceManager();
 			void birthParticles(std::vector<Particle> & particles, unsigned int time);
-			void addSource(quarks::sources::Source* f);
+			void addSource(quarks::sources::SourcePtr f);
 			void clearSources();
 		private:
-			std::vector<quarks::sources::Source*> sources;
+			std::vector<quarks::sources::SourcePtr> sources;
 			unsigned int maxID;
 		};
 

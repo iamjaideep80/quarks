@@ -43,7 +43,7 @@ namespace quarks
 			{
 				forceManager.clearForces();
 			}
-			void addSource(quarks::sources::Source* f)
+			void addSource(quarks::sources::SourcePtr f)
 			{
 				sourceManager.addSource(f);
 			}

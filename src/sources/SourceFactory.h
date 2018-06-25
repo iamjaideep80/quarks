@@ -24,7 +24,7 @@ namespace quarks
 		public:
 			SourceFactory();
 			virtual ~SourceFactory();
-			Source* getSource(SourceData sourceData);
+			SourcePtr getSource(SourceData sourceData);
 		};
 	} /* namespace forces */
 } /* namespace quarks */

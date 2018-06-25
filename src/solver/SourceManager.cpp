@@ -22,7 +22,7 @@ namespace quarks
 		{
 			// TODO Auto-generated destructor stub
 		}
-		void SourceManager::addSource(quarks::sources::Source* f)
+		void SourceManager::addSource(quarks::sources::SourcePtr f)
 		{
 			sources.push_back(f);
 		}
@@ -34,7 +34,7 @@ namespace quarks
 		{
 			for (int i = 0; i < sources.size(); i++)
 			{
-				quarks::sources::Source* srcPtr = sources[i];
+				quarks::sources::SourcePtr srcPtr = sources[i];
 				std::vector<PosVec> positions = srcPtr->requestPositions(time);
 				for (int j = 0; j < srcPtr->getBirthRate(); j++)
 				{

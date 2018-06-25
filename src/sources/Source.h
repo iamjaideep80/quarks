@@ -9,6 +9,7 @@
 #include <vector>
 #include "SourceData.h"
 #include "../base_types/CommonTypes.h"
+#include <memory>
 using quarks::base_types::PosVec;
 using quarks::base_types::Scalar;
 using quarks::base_types::DirVec;
@@ -41,6 +42,7 @@ namespace quarks
 			Scalar lifeExpectancy;
 			sourceType myType;
 		};
+		using SourcePtr = std::shared_ptr<Source>;
 	} /* namespace sources */
 } /* namespace quarks */
 #endif /* SOURCE_H_ */

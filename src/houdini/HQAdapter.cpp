@@ -39,11 +39,8 @@ namespace quarks
 			AttribManager attribManager;
 			attribManager.extractSourceInfo(source, sourceDataVector);
 			sources::SourceFactory sourceFactory;
-			for (int i = 0; i < sourceDataVector.size(); i++)
-			{
-				sources::Source* sourcePtr = sourceFactory.getSource(sourceDataVector[i]);
-				quarks.addSource(sourcePtr);
-			}
+			for(auto sourceData:sourceDataVector)
+				quarks.addSource(sourceFactory.getSource(sourceData));
 		}
 		void HQAdapter::setSoftBodies(const GU_Detail* source)
 		{
