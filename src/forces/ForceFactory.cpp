@@ -46,8 +46,8 @@ namespace quarks
 		}
 		Force* ForceFactory::getForce(const ForceData& forceData)
 		{
-			return getForce(forceData.getType(), forceData.getAmp(), forceData.getDir(),
-							forceData.getGridPtr());
+			return getForce(forceData.type, forceData.amp, forceData.dir,
+							forceData.gridPtr);
 		}
 	} /* namespace forces */
 } /* namespace quarks */

@@ -20,21 +20,16 @@ namespace quarks
 		{
 			UNIFORM_FORCE, DRAG_FORCE, NOISE_FORCE, VORTEX_FORCE, COLLISION_FORCE
 		};
-		class ForceData
+		struct ForceData
 		{
-		public:
-			ForceData(force_type type, Scalar amp, DirVec dir, openvdb::VectorGrid::Ptr gridPtr);
-			virtual ~ForceData();
-			Scalar getAmp() const;
-			void setAmp(Scalar amp);
-			const DirVec& getDir() const;
-			void setDir(const DirVec& dir);
-			const openvdb::VectorGrid::Ptr& getGridPtr() const;
-			void setGridPtr(const openvdb::VectorGrid::Ptr& gridPtr);
-			force_type getType() const;
-			void setType(force_type type);
-
-		private:
+			ForceData(force_type type,
+					Scalar amp, DirVec dir,
+					openvdb::VectorGrid::Ptr gridPtr) :
+					type(type),
+					amp(amp),
+					dir(dir),
+					gridPtr(gridPtr)
+			{};
 			force_type type;
 			Scalar amp;
 			DirVec dir;
