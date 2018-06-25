@@ -42,12 +42,7 @@ namespace quarks
 			sourceManager.birthParticles(particles, steps);
 			softBodyManager.birthParticles(particles, springs, steps);
 			forceManager.accumulateForces(particles, springs);
-			theadedOperation(timeStep);
-			steps++;
-		}
 
-		void ParticleSystem::theadedOperation(Scalar timeStep)
-		{
 			int numOfThreads = std::thread::hardware_concurrency() - 1;
 
 			std::vector<std::thread> threadsA;
@@ -56,6 +51,8 @@ namespace quarks
 
 			for (auto& thread : threadsA)
 				thread.join();
+
+			steps++;
 		}
 
 		void ParticleSystem::solveStep(int threadIndex, int numThreads, Scalar timeStep)

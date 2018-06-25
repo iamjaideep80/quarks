@@ -73,7 +73,6 @@ namespace quarks
 			std::vector<Spring> springs;
 			collisions::Collision* collision;
 			bool IsCollisionRegistered;
-			void theadedOperation(Scalar timeStep);
 			void solveStep(int threadIndex, int numThreads, Scalar timeStep);
 			unsigned int steps;
 			SourceManager sourceManager;
