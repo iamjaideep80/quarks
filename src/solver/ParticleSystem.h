@@ -35,7 +35,7 @@ namespace quarks
 				return particles[index];
 			}
 			void stepForward(Scalar timeStep);
-			void addForce(quarks::forces::Force* f)
+			void addForce(quarks::forces::ForcePtr f)
 			{
 				forceManager.addForce(f);
 			}

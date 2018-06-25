@@ -7,6 +7,7 @@
 #ifndef FORCE_H_
 #define FORCE_H_
 #include "../base_types/CommonTypes.h"
+#include <memory>
 using namespace quarks::base_types;
 namespace quarks
 {
@@ -19,6 +20,7 @@ namespace quarks
 			virtual ~Force();
 			virtual DirVec calculateFoce(PosVec pos, DirVec vel) = 0;
 		};
+		using ForcePtr = std::shared_ptr<Force>;
 	}
 } /* namespace quarks */
 #endif /* FORCE_H_ */

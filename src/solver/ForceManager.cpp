@@ -22,7 +22,7 @@ namespace quarks
 		{
 			// TODO Auto-generated destructor stub
 		}
-		void ForceManager::addForce(quarks::forces::Force* f)
+		void ForceManager::addForce(quarks::forces::ForcePtr f)
 		{
 			forces.push_back(f);
 		}

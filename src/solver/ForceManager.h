@@ -22,13 +22,13 @@ namespace quarks
 		public:
 			ForceManager();
 			virtual ~ForceManager();
-			void addForce(quarks::forces::Force* f);
+			void addForce(quarks::forces::ForcePtr f);
 			void clearForces();
 			void accumulateForces(std::vector<Particle> & particles, std::vector<Spring> & springs);
 		private:
 			void accumulateExternalForces(std::vector<Particle> & particles);
 			void accumulateInternalForces(std::vector<Spring> & springs);
-			std::vector<quarks::forces::Force*> forces;
+			std::vector<quarks::forces::ForcePtr> forces;
 		};
 
 	} /* namespace solver */

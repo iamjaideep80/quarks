@@ -64,8 +64,7 @@ namespace quarks
 			forces::ForceFactory forceFactory;
 			for (int i = 0; i < forceDataVec.size(); i++)
 			{
-				forces::Force* force = forceFactory.getForce(forceDataVec[i]);
-				quarks.addForce(force);
+				quarks.addForce(forceFactory.getForce(forceDataVec[i]));
 			}
 		}
 		void HQAdapter::setCollisions(const GU_Detail* collision)
