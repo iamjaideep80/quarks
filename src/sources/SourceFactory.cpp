@@ -20,14 +20,13 @@ namespace quarks
 		}
 		Source* SourceFactory::getSource(SourceData sourceData)
 		{
-			sourceType type = sourceData.getType();
-			int rate = sourceData.getRate();
-			PosVec pos = sourceData.getPos();
-			Scalar size = sourceData.getSize();
-			Scalar lifeExpectancy = sourceData.getLifeExpectancy();
-			openvdb::FloatGrid::Ptr ptr = sourceData.getGridPtr();
+			int rate = sourceData.rate;
+			PosVec pos = sourceData.pos;
+			Scalar size = sourceData.size;
+			Scalar lifeExpectancy = sourceData.lifeExpectancy;
+			openvdb::FloatGrid::Ptr ptr = sourceData.gridPtr;
 			Source* source;
-			switch (type)
+			switch (sourceData.type)
 			{
 			case SPHERE_SOURCE:
 				source = new quarks::sources::SphereSource(rate, pos, size, lifeExpectancy);
