@@ -34,19 +34,42 @@ namespace quarks
 
 		void HQAdapter::setSources(const GU_Detail* source)
 		{
-			clearSources();
-			addSources(source);
+			quarks.clearSources();
+			sources::SourceDataVector sourceDataVector;
+			AttribManager attribManager;
+			attribManager.extractSourceInfo(source, sourceDataVector);
+			sources::SourceFactory sourceFactory;
+			for (int i = 0; i < sourceDataVector.size(); i++)
+			{
+				sources::Source* sourcePtr = sourceFactory.getSource(sourceDataVector[i]);
+				quarks.addSource(sourcePtr);
+			}
 		}
 		void HQAdapter::setSoftBodies(const GU_Detail* source)
 		{
-			clearSoftBodies();
-			addSoftBodies(source);
+			quarks.clearSoftBodies();
+			sources::SoftBodyDataVector softBodyDataVector;
+			AttribManager attribManager;
+			attribManager.extractSoftBodyInfo(source, softBodyDataVector);
+			for (int i = 0; i < softBodyDataVector.size(); i++)
+			{
+				sources::SoftBodySource* sbsPtr = new sources::SoftBodySource(softBodyDataVector[i]);
+				quarks.addSoftBody(sbsPtr);
+			}
 			quarks.setClothSolverFlag(true);
 		}
 		void HQAdapter::setForces(const GU_Detail* force)
 		{
-			clearForces();
-			addForces(force);
+			quarks.clearForces();
+			forces::ForceDataVector forceDataVec;
+			AttribManager attribManager;
+			attribManager.extractForceInfo(force, forceDataVec);
+			forces::ForceFactory forceFactory;
+			for (int i = 0; i < forceDataVec.size(); i++)
+			{
+				forces::Force* force = forceFactory.getForce(forceDataVec[i]);
+				quarks.addForce(force);
+			}
 		}
 		void HQAdapter::setCollisions(const GU_Detail* collision)
 		{
@@ -96,19 +119,6 @@ namespace quarks
 			}
 		}
 
-		void HQAdapter::addForces(const GU_Detail* force)
-		{
-			forces::ForceDataVector forceDataVec;
-			AttribManager attribManager;
-			attribManager.extractForceInfo(force, forceDataVec);
-			forces::ForceFactory forceFactory;
-			for (int i = 0; i < forceDataVec.size(); i++)
-			{
-				forces::Force* force = forceFactory.getForce(forceDataVec[i]);
-				quarks.addForce(force);
-			}
-		}
-
 		void HQAdapter::setGdp(GU_Detail* gdpInput)
 		{
 			gdp = gdpInput;
@@ -117,42 +127,5 @@ namespace quarks
 			lifeRef = gdp->addFloatTuple(GA_ATTRIB_POINT, "life", 2);
 			velRef = gdp->addFloatTuple(GA_ATTRIB_POINT, "v", 3);
 		}
-
-		void HQAdapter::clearForces()
-		{
-			quarks.clearForces();
-		}
-		void HQAdapter::addSources(const GU_Detail* source)
-		{
-			sources::SourceDataVector sourceDataVector;
-			AttribManager attribManager;
-			attribManager.extractSourceInfo(source, sourceDataVector);
-			sources::SourceFactory sourceFactory;
-			for (int i = 0; i < sourceDataVector.size(); i++)
-			{
-				sources::Source* sourcePtr = sourceFactory.getSource(sourceDataVector[i]);
-				quarks.addSource(sourcePtr);
-			}
-		}
-		void HQAdapter::clearSources()
-		{
-			quarks.clearSources();
-		}
-		void HQAdapter::addSoftBodies(const GU_Detail* softBodyGDP)
-		{
-			sources::SoftBodyDataVector softBodyDataVector;
-			AttribManager attribManager;
-			attribManager.extractSoftBodyInfo(softBodyGDP, softBodyDataVector);
-			for (int i = 0; i < softBodyDataVector.size(); i++)
-			{
-				sources::SoftBodySource* sbsPtr = new sources::SoftBodySource(softBodyDataVector[i]);
-				quarks.addSoftBody(sbsPtr);
-			}
-		}
-		void HQAdapter::clearSoftBodies()
-		{
-			quarks.clearSoftBodies();
-		}
-
 	} /* namespace houdini */
 } /* namespace quarks */

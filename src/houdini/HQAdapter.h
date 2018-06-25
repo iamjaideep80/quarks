@@ -30,12 +30,6 @@ namespace quarks
 
 		private:
 			quarks::solver::ParticleSystem quarks;
-			void addSources(const GU_Detail* source);
-			void clearSources();
-			void addSoftBodies(const GU_Detail* source);
-			void clearSoftBodies();
-			void addForces(const GU_Detail* force);
-			void clearForces();
 			GEO_PrimParticle* particlePrimPtr;
 			GU_Detail* gdp;
 			GA_RWAttributeRef idRef;

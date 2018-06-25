@@ -74,17 +74,11 @@ void SOP_Quarks::stepForward(fpreal now)
 	if (error() >= UT_ERROR_ABORT)
 		return;
 	if (sourceGDP)
-	{
 		adapter.setSources(sourceGDP);
-	}
 	if (forceGDP)
-	{
 		adapter.setForces(forceGDP);
-	}
 	if (softBodyGDP)
-	{
 		adapter.setSoftBodies(softBodyGDP);
-	}
 	fpreal fps = OPgetDirector()->getChannelManager()->getSamplesPerSec();
 	adapter.stepForward(gdp, fps / SIM_TIME_SCALE(), SUBSTEPS(now));
 }
