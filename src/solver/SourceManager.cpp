@@ -38,9 +38,9 @@ namespace quarks
 				std::vector<PosVec> positions = srcPtr->requestPositions(time);
 				for (int j = 0; j < srcPtr->getBirthRate(); j++)
 				{
-					PosVec initPos(positions[j][0], positions[j][1], positions[j][2]);
-					Scalar initLifeExpectancy = srcPtr->getLifeExpectancy();
-					particles.emplace_back(initPos,initLifeExpectancy, maxID);
+					particles.emplace_back(positions[j],
+							srcPtr->getLifeExpectancy(),
+							maxID);
 					maxID++;
 				}
 			}
