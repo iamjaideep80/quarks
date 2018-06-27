@@ -10,14 +10,6 @@ namespace quarks
 {
 	namespace sources
 	{
-		SourceFactory::SourceFactory()
-		{
-			// TODO Auto-generated constructor stub
-		}
-		SourceFactory::~SourceFactory()
-		{
-			// TODO Auto-generated destructor stub
-		}
 		SourcePtr SourceFactory::getSource(SourceData sourceData)
 		{
 			int rate = sourceData.rate;

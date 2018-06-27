@@ -21,10 +21,6 @@ namespace quarks
 			this->lifeExpectancy = lifeExpectancy;
 			myType = SPHERE_SOURCE;
 		}
-		SphereSource::~SphereSource()
-		{
-			// TODO Auto-generated destructor stub
-		}
 		std::vector<PosVec> SphereSource::requestPositions(unsigned int time)
 		{
 			int nb_points = birthRate;

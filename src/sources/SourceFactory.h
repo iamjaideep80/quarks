@@ -22,8 +22,8 @@ namespace quarks
 		class SourceFactory
 		{
 		public:
-			SourceFactory();
-			virtual ~SourceFactory();
+			SourceFactory(){};
+			virtual ~SourceFactory(){};
 			SourcePtr getSource(SourceData sourceData);
 		};
 	} /* namespace forces */
