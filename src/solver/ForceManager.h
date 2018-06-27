@@ -20,14 +20,23 @@ namespace quarks
 		class ForceManager
 		{
 		public:
-			ForceManager();
-			virtual ~ForceManager();
-			void addForce(quarks::forces::ForcePtr f);
-			void clearForces();
-			void accumulateForces(std::vector<Particle> & particles, std::vector<Spring> & springs);
-		private:
-			void accumulateExternalForces(std::vector<Particle> & particles);
+			ForceManager(){};
+			virtual ~ForceManager(){};
+			inline void addForce(quarks::forces::ForcePtr f)
+			{
+				forces.push_back(f);
+			};
+			inline void clearForces()
+			{
+				forces.clear();
+			}
+			inline void accumulateExternalForces(Particle& particle)
+			{
+				for (int j = 0; j < forces.size(); j++)
+					particle.force += forces[j]->calculateFoce(particle.position,particle.velocity);
+			};
 			void accumulateInternalForces(std::vector<Spring> & springs);
+		private:
 			std::vector<quarks::forces::ForcePtr> forces;
 		};
 
