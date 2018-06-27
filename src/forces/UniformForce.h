@@ -14,9 +14,16 @@ namespace quarks
 		class Uniform_Force : public quarks::forces::Force
 		{
 		public:
-			Uniform_Force(Scalar amp, DirVec dir);
-			virtual ~Uniform_Force();
-			DirVec calculateFoce(PosVec pos, DirVec vel);
+			Uniform_Force(Scalar amp, DirVec dir)
+			{
+				amplitude = amp;
+				direction = dir;
+			}
+			virtual ~Uniform_Force(){};
+			inline DirVec calculateFoce(PosVec pos, DirVec vel)
+			{
+				return amplitude * direction;
+			}
 		private:
 			Scalar amplitude;
 			DirVec direction;

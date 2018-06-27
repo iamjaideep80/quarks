@@ -14,9 +14,17 @@ namespace quarks
 		class Vortex_Force : public quarks::forces::Force
 		{
 		public:
-			Vortex_Force(Scalar amp, DirVec dir);
-			virtual ~Vortex_Force();
-			DirVec calculateFoce(PosVec pos, DirVec vel);
+			Vortex_Force(Scalar amp, DirVec dir)
+			{
+				amplitude = amp;
+				direction = dir;
+			}
+			virtual ~Vortex_Force(){};
+			inline DirVec calculateFoce(PosVec pos, DirVec vel)
+			{
+				DirVec modPos = pos - dot(direction, pos) * direction;
+				return amplitude * cross(modPos, direction);
+			}
 		private:
 			Scalar amplitude;
 			DirVec direction;

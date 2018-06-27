@@ -9,16 +9,6 @@ namespace quarks
 {
 	namespace forces
 	{
-		VDB_Force::VDB_Force(Scalar amp, DirVec dir, openvdb::VectorGrid::Ptr ptr)
-		{
-			amplitude = amp;
-			gridPtr = ptr;
-			// TODO Auto-generated constructor stub
-		}
-		VDB_Force::~VDB_Force()
-		{
-			// TODO Auto-generated destructor stub
-		}
 		DirVec VDB_Force::calculateFoce(PosVec pos, DirVec vel)
 		{
 			const openvdb::Vec3R ijk(pos.x() / gridPtr->voxelSize().x(), pos.y() / gridPtr->voxelSize().y(),

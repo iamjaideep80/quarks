@@ -26,8 +26,6 @@ namespace quarks
 			ForceFactory(){};
 			virtual ~ForceFactory(){};
 			ForcePtr getForce(const ForceData& forceData);
-		private:
-			ForcePtr getForce(force_type type, Scalar amp, DirVec dir, openvdb::VectorGrid::Ptr gridPtr);
 		};
 	} /* namespace forces */
 } /* namespace quarks */
