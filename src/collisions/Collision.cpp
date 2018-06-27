@@ -18,14 +18,6 @@ namespace quarks
 			this->gainNormal = collisionData.gainNormal;
 			this->outerIsoVal = collisionData.isoVal;
 		}
-		Collision::~Collision()
-		{
-			// TODO Auto-generated destructor stub
-		}
-		const openvdb::FloatGrid::Ptr& Collision::getGridPtr() const
-		{
-			return gridPtr;
-		}
 
 		void Collision::applyCollision(const PosVec& oldPos, const DirVec& oldVel, PosVec& newPos,
 				DirVec& newVel)

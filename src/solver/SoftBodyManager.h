@@ -13,7 +13,7 @@ using namespace quarks::base_types;
 #include "../base_types/Spring.h"
 #include "../sources/Source.h"
 #include "../sources/SoftBodySource.h"
-#include<map>
+#include <map>
 namespace quarks
 {
 	namespace solver
@@ -22,13 +22,26 @@ namespace quarks
 		class SoftBodyManager
 		{
 		public:
-			SoftBodyManager();
-			virtual ~SoftBodyManager();
+			SoftBodyManager()
+			{
+				softBodies.clear();
+				maxID = 0;
+			}
+			virtual ~SoftBodyManager(){};
 			void birthParticles(std::vector<Particle> & particles, std::vector<Spring> & springs,
 					unsigned int time);
-			void addSoftBody(quarks::sources::SoftBodySourcePtr f);
-			void clearSoftBodies();
-			PosVec getConstraintPos(int softBodyNum, int pointNum);
+			inline void addSoftBody(quarks::sources::SoftBodySourcePtr f)
+			{
+				softBodies.push_back(f);
+			}
+			inline void clearSoftBodies()
+			{
+				softBodies.clear();
+			}
+			inline PosVec getConstraintPos(int softBodyNum, int pointNum)
+			{
+				return softBodies[softBodyNum]->requestPositions(0, pointNum);
+			}
 		private:
 			std::vector<quarks::sources::SoftBodySourcePtr> softBodies;
 			unsigned int maxID;

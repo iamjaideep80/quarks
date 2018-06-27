@@ -11,25 +11,6 @@ namespace quarks
 {
 	namespace solver
 	{
-
-		SoftBodyManager::SoftBodyManager()
-		{
-			softBodies.clear();
-			maxID = 0;
-		}
-
-		SoftBodyManager::~SoftBodyManager()
-		{
-			// TODO Auto-generated destructor stub
-		}
-		void SoftBodyManager::addSoftBody(quarks::sources::SoftBodySourcePtr f)
-		{
-			softBodies.push_back(f);
-		}
-		void SoftBodyManager::clearSoftBodies()
-		{
-			softBodies.clear();
-		}
 		void SoftBodyManager::birthParticles(std::vector<Particle> & particles,
 				std::vector<Spring> & springs, unsigned int time)
 		{
@@ -60,10 +41,6 @@ namespace quarks
 							srcPtr->getDampingConstant());
 				}
 			}
-		}
-		PosVec SoftBodyManager::getConstraintPos(int softBodyNum, int pointNum)
-		{
-			return softBodies[softBodyNum]->requestPositions(0, pointNum);
 		}
 	} /* namespace solver */
 } /* namespace quarks */

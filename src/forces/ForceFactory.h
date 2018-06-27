@@ -23,8 +23,8 @@ namespace quarks
 		class ForceFactory
 		{
 		public:
-			ForceFactory();
-			virtual ~ForceFactory();
+			ForceFactory(){};
+			virtual ~ForceFactory(){};
 			ForcePtr getForce(const ForceData& forceData);
 		private:
 			ForcePtr getForce(force_type type, Scalar amp, DirVec dir, openvdb::VectorGrid::Ptr gridPtr);

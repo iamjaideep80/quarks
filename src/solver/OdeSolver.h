@@ -18,8 +18,8 @@ namespace quarks
 		class OdeSolver
 		{
 		public:
-			OdeSolver();
-			virtual ~OdeSolver();
+			OdeSolver(){};
+			virtual ~OdeSolver(){};
 			void applyRK4(const Scalar timeStep, const PosVec& oldPos, const DirVec& oldVel,
 					const DirVec& oldForce, PosVec& newPos, DirVec& newVel);
 			void applyEuler(const Scalar timeStep, const PosVec& oldPos, const DirVec& oldVel,

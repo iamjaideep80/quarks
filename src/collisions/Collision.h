@@ -20,8 +20,11 @@ namespace quarks
 		{
 		public:
 			Collision(CollisionData	 collisionData);
-			virtual ~Collision();
-			const openvdb::FloatGrid::Ptr& getGridPtr() const;
+			virtual ~Collision(){};
+			inline const openvdb::FloatGrid::Ptr& getGridPtr() const
+			{
+				return gridPtr;
+			}
 			void applyCollision(const PosVec& oldPos, const DirVec& oldVel, PosVec& newPos, DirVec& newVel);
 		private:
 			openvdb::FloatGrid::Ptr gridPtr;

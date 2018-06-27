@@ -2,7 +2,7 @@
 
 Import('env')
 
-lib_src = ['Force.cpp','ForceFactory.cpp','UniformForce.cpp','DragForce.cpp','NoiseForce.cpp','VortexForce.cpp','VDBForce.cpp']
+lib_src = ['Force.cpp','ForceFactory.cpp','UniformForce.cpp','NoiseForce.cpp','VortexForce.cpp','VDBForce.cpp']
 lib_target = 'forces'
 
 env.Append(CPPPATH = ['/opt/houdini/toolkit/include/'])

@@ -11,25 +11,6 @@ namespace quarks
 {
 	namespace solver
 	{
-
-		SourceManager::SourceManager()
-		{
-			sources.clear();
-			maxID = 0;
-		}
-
-		SourceManager::~SourceManager()
-		{
-			// TODO Auto-generated destructor stub
-		}
-		void SourceManager::addSource(quarks::sources::SourcePtr f)
-		{
-			sources.push_back(f);
-		}
-		void SourceManager::clearSources()
-		{
-			sources.clear();
-		}
 		void SourceManager::birthParticles(std::vector<Particle> & particles, unsigned int time)
 		{
 			for (int i = 0; i < sources.size(); i++)
@@ -45,6 +26,5 @@ namespace quarks
 				}
 			}
 		}
-
 	} /* namespace solver */
 } /* namespace quarks */

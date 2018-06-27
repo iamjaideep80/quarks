@@ -16,13 +16,12 @@ namespace quarks
 {
 	namespace solver
 	{
-
 		class ForceManager
 		{
 		public:
 			ForceManager(){};
 			virtual ~ForceManager(){};
-			inline void addForce(quarks::forces::ForcePtr f)
+			inline void addForce(forces::ForcePtr f)
 			{
 				forces.push_back(f);
 			};
@@ -37,9 +36,8 @@ namespace quarks
 			};
 			void accumulateInternalForces(std::vector<Spring> & springs);
 		private:
-			std::vector<quarks::forces::ForcePtr> forces;
+			std::vector<forces::ForcePtr> forces;
 		};
-
 	} /* namespace solver */
 } /* namespace quarks */
 #endif /* FORCEMANAGER_H_ */

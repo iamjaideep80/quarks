@@ -9,14 +9,6 @@ namespace quarks
 {
 	namespace forces
 	{
-		ForceFactory::ForceFactory()
-		{
-			// TODO Auto-generated constructor stub
-		}
-		ForceFactory::~ForceFactory()
-		{
-			// TODO Auto-generated destructor stub
-		}
 		ForcePtr ForceFactory::getForce(force_type type, Scalar amp, DirVec dir,
 				openvdb::VectorGrid::Ptr gridPtr)
 		{
