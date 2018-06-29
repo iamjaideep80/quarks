@@ -19,14 +19,6 @@ namespace quarks
 {
 	namespace houdini
 	{
-		HQAdapter::HQAdapter()
-		{
-			// TODO Auto-generated constructor stub
-		}
-		HQAdapter::~HQAdapter()
-		{
-			// TODO Auto-generated destructor stub
-		}
 		void HQAdapter::initializeSystem()
 		{
 			quarks.initializeSystem();

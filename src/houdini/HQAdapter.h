@@ -17,8 +17,8 @@ namespace quarks
 		class HQAdapter
 		{
 		public:
-			HQAdapter();
-			virtual ~HQAdapter();
+			HQAdapter(){};
+			virtual ~HQAdapter(){};
 			void initializeSystem();
 			void setSources(const GU_Detail* source);
 			void setSoftBodies(const GU_Detail* source);

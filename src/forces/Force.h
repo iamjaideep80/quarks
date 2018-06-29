@@ -16,8 +16,8 @@ namespace quarks
 		class Force
 		{
 		public:
-			Force();
-			virtual ~Force();
+			Force(){};
+			virtual ~Force(){};
 			virtual DirVec calculateFoce(PosVec pos, DirVec vel) = 0;
 		};
 		using ForcePtr = std::shared_ptr<Force>;

@@ -27,7 +27,7 @@ namespace quarks
 			}
 			virtual ~SourceManager(){};
 			void birthParticles(std::vector<Particle> & particles, unsigned int time);
-			inline void addSource(quarks::sources::SourcePtr f)
+			inline void addSource(sources::SourcePtr f)
 			{
 				sources.push_back(f);
 			}

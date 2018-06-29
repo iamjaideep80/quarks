@@ -21,7 +21,6 @@ namespace HDK_Sample
 	protected:
 		virtual const char *inputLabel(unsigned idx) const;
 		void initSystem();
-		void stepForward(fpreal now);
 		virtual OP_ERROR cookMySop(OP_Context &context);
 	private:
 		int RESET()
@@ -39,10 +38,6 @@ namespace HDK_Sample
 		fpreal myLastCookTime;	// Last cooked time
 		static int *myOffsets;
 		quarks::houdini::HQAdapter adapter;
-		const GU_Detail* sourceGDP;
-		const GU_Detail* forceGDP;
-		const GU_Detail* collisionGDP;
-		const GU_Detail* softBodyGDP;
 	};
 } // End HDK_Sample namespace
 #endif
