@@ -23,6 +23,13 @@ namespace HDK_Sample
 		void initSystem();
 		virtual OP_ERROR cookMySop(OP_Context &context);
 	private:
+		enum class InputIndex
+		{
+			SOURCE,
+			FORCE,
+			COLLISION,
+			SOFTBODY
+		};
 		int RESET()
 		{
 			INT_PARM("reset", 0, 0, 0)

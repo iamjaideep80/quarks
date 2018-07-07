@@ -60,9 +60,9 @@ void SOP_Quarks::initSystem()
 {
 	adapter.setGdp(gdp);
 	adapter.initializeSystem();
-	if (inputGeo(2))
+	if (inputGeo(int(InputIndex::COLLISION)))
 	{
-		adapter.setCollisions(inputGeo(2));
+		adapter.setCollisions(inputGeo(int(InputIndex::COLLISION)));
 	}
 }
 OP_ERROR SOP_Quarks::cookMySop(OP_Context &context)
@@ -82,12 +82,12 @@ OP_ERROR SOP_Quarks::cookMySop(OP_Context &context)
 	while (myLastCookTime < currframe)
 	{
 		fpreal now = chman->getTime(myLastCookTime);
-		if (inputGeo(0))
-			adapter.setSources(inputGeo(0));
-		if (inputGeo(1))
-			adapter.setForces(inputGeo(1));
-		if (inputGeo(3))
-			adapter.setSoftBodies(inputGeo(3));
+		if (inputGeo(int(InputIndex::SOURCE)))
+			adapter.setSources(inputGeo(int(InputIndex::SOURCE)));
+		if (inputGeo(int(InputIndex::FORCE)))
+			adapter.setForces(inputGeo(int(InputIndex::FORCE)));
+		if (inputGeo(int(InputIndex::SOFTBODY)))
+			adapter.setSoftBodies(inputGeo(int(InputIndex::SOFTBODY)));
 		fpreal fps = OPgetDirector()->getChannelManager()->getSamplesPerSec();
 		adapter.stepForward(gdp, fps / SIM_TIME_SCALE(), SUBSTEPS(now));
 		myLastCookTime += 1;
