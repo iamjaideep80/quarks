@@ -22,9 +22,9 @@ namespace quarks
 		class SourceFactory
 		{
 		public:
-			SourceFactory();
-			virtual ~SourceFactory();
-			Source* getSource(SourceData sourceData);
+			SourceFactory(){};
+			virtual ~SourceFactory(){};
+			SourcePtr getSource(SourceData sourceData);
 		};
 	} /* namespace forces */
 } /* namespace quarks */

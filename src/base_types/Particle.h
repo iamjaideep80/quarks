@@ -1,48 +1,33 @@
 #ifndef PARTICLE_H_
 #define PARTICLE_H_
 #include "CommonTypes.h"
-namespace quarks
-{
-	namespace base_types
-	{
-		class Particle
-		{
-		public:
-			Particle(Scalar life_expectany, unsigned int id);
-			~Particle();
-			PosVec getPosition();
-			void setPosition(PosVec vel);
-			DirVec getVelocity();
-			void setVelocity(DirVec vel);
-			Scalar getMass();
-			void setMass(Scalar m);
-			DirVec getForce();
-			void setForce(DirVec f);
-			Scalar getLifeExpectany() const;
-			void setLifeExpectany(Scalar age);
-			Scalar getLife() const;
-			void setLife(Scalar life);
-			void addForce(DirVec f);
-			int64 getId() const;
-			bool isIsFixed() const;
-			void setIsFixed(bool isFixed);
-			int getSoftBodySourceNum() const;
-			void setSoftBodySourceNum(int softBodySourceNum);
-			int getSoftBodyPointNum() const;
-			void setSoftBodyPointNum(int softBodyPointNum);
-
-		private:
-			PosVec position;
-			DirVec velocity;
-			Scalar mass;
-			DirVec force;
-			Scalar life;
-			Scalar lifeExpectancy;
-			int64 id;
-			bool isFixed;
-			int softBodySourceNum;
-			int softBodyPointNum;
-		};
-	}
+namespace quarks {
+namespace base_types {
+struct Particle {
+	Particle(PosVec in_position,
+			Scalar in_lifeExpectancy,
+			unsigned int in_id,
+			bool in_isFixed=0,
+			int in_softBodySourceNum=-1,
+			int in_softBodyPointNum=-1) :
+			position(in_position),
+			id(in_id),
+			lifeExpectancy(in_lifeExpectancy),
+			isFixed(in_isFixed),
+			softBodySourceNum(in_softBodySourceNum),
+			softBodyPointNum(in_softBodyPointNum)
+			{};
+	PosVec position { 0.0 };
+	DirVec velocity { 0.0 };
+	Scalar mass = 10;
+	DirVec force { 0.0 };
+	Scalar life = 0;
+	Scalar lifeExpectancy = 0;
+	int64 id = 0;
+	bool isFixed = 0;
+	int softBodySourceNum = -1;
+	int softBodyPointNum = -1;
+};
+}
 }
 #endif /* PARTICLE_H_ */

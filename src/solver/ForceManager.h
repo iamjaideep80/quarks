@@ -16,22 +16,28 @@ namespace quarks
 {
 	namespace solver
 	{
-
 		class ForceManager
 		{
 		public:
-			ForceManager();
-			virtual ~ForceManager();
-			void addForce(quarks::forces::Force* f);
-			void clearForces();
-			void accumulateForces(std::vector<Particle*> & particles, const std::vector<Spring*> & springs);
+			ForceManager(){};
+			virtual ~ForceManager(){};
+			inline void addForce(forces::ForcePtr f)
+			{
+				forces.push_back(f);
+			};
+			inline void clearForces()
+			{
+				forces.clear();
+			}
+			inline void accumulateExternalForces(Particle& particle)
+			{
+				for (int j = 0; j < forces.size(); j++)
+					particle.force += forces[j]->calculateFoce(particle.position,particle.velocity);
+			};
+			void accumulateInternalForces(std::vector<Spring> & springs);
 		private:
-			void accumulateExternalForces(std::vector<Particle*> & particles);
-			void accumulateInternalForces(std::vector<Particle*> & particles,
-					const std::vector<Spring*> & springs);
-			std::vector<quarks::forces::Force*> forces;
+			std::vector<forces::ForcePtr> forces;
 		};
-
 	} /* namespace solver */
 } /* namespace quarks */
 #endif /* FORCEMANAGER_H_ */

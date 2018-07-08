@@ -13,18 +13,10 @@ namespace quarks
 	{
 		Collision::Collision(CollisionData collisionData)
 		{
-			gridPtr = collisionData.getGridPtr();
-			this->gainTangent = collisionData.getGainTangent();
-			this->gainNormal = collisionData.getGainNormal();
-			this->outerIsoVal = collisionData.getIsoVal();
-		}
-		Collision::~Collision()
-		{
-			// TODO Auto-generated destructor stub
-		}
-		const openvdb::FloatGrid::Ptr& Collision::getGridPtr() const
-		{
-			return gridPtr;
+			gridPtr = collisionData.gridPtr;
+			this->gainTangent = collisionData.gainTangent;
+			this->gainNormal = collisionData.gainNormal;
+			this->outerIsoVal = collisionData.isoVal;
 		}
 
 		void Collision::applyCollision(const PosVec& oldPos, const DirVec& oldVel, PosVec& newPos,

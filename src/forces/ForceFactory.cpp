@@ -9,45 +9,29 @@ namespace quarks
 {
 	namespace forces
 	{
-		ForceFactory::ForceFactory()
+		ForcePtr ForceFactory::getForce(const ForceData& forceData)
 		{
-			// TODO Auto-generated constructor stub
-		}
-		ForceFactory::~ForceFactory()
-		{
-			// TODO Auto-generated destructor stub
-		}
-		Force* ForceFactory::getForce(force_type type, Scalar amp, DirVec dir,
-				openvdb::VectorGrid::Ptr gridPtr)
-		{
-			Force* force;
-			switch (type)
+			switch (forceData.type)
 			{
 			case 0:
-				force = new quarks::forces::Uniform_Force(amp, dir);
+				return ForcePtr(new quarks::forces::Uniform_Force(forceData.amp, forceData.dir));
 				break;
 			case 1:
-				force = new quarks::forces::Drag_Force(amp);
+				return ForcePtr(new quarks::forces::Drag_Force(forceData.amp));
 				break;
 			case 2:
-				force = new quarks::forces::Noise_Force(amp);
+				return ForcePtr(new quarks::forces::Noise_Force(forceData.amp));
 				break;
 			case 3:
-				force = new quarks::forces::Vortex_Force(amp, dir);
+				return ForcePtr(new quarks::forces::Vortex_Force(forceData.amp, forceData.dir));
 				break;
 			case 4:
-				force = new quarks::forces::VDB_Force(amp, dir, gridPtr);
+				return ForcePtr(new quarks::forces::VDB_Force(forceData.amp, forceData.dir, forceData.gridPtr));
 				break;
 			default:
-				force = new quarks::forces::Uniform_Force(amp, dir);
+				return ForcePtr(new quarks::forces::Uniform_Force(forceData.amp, forceData.dir));
 				break;
 			}
-			return force;
-		}
-		Force* ForceFactory::getForce(const ForceData& forceData)
-		{
-			return getForce(forceData.getType(), forceData.getAmp(), forceData.getDir(),
-							forceData.getGridPtr());
 		}
 	} /* namespace forces */
 } /* namespace quarks */

@@ -21,9 +21,15 @@ namespace HDK_Sample
 	protected:
 		virtual const char *inputLabel(unsigned idx) const;
 		void initSystem();
-		void stepForward(fpreal now);
 		virtual OP_ERROR cookMySop(OP_Context &context);
 	private:
+		enum class InputIndex
+		{
+			SOURCE,
+			FORCE,
+			COLLISION,
+			SOFTBODY
+		};
 		int RESET()
 		{
 			INT_PARM("reset", 0, 0, 0)
@@ -39,10 +45,6 @@ namespace HDK_Sample
 		fpreal myLastCookTime;	// Last cooked time
 		static int *myOffsets;
 		quarks::houdini::HQAdapter adapter;
-		const GU_Detail* sourceGDP;
-		const GU_Detail* forceGDP;
-		const GU_Detail* collisionGDP;
-		const GU_Detail* softBodyGDP;
 	};
 } // End HDK_Sample namespace
 #endif

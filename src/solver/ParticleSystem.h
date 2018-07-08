@@ -16,7 +16,7 @@ namespace quarks
 {
 	namespace solver
 	{
-		const int MAX_NUM_PARTICLES = 1000000;
+		const int MAX_NUM_PARTICLES = 10000000;
 		class ParticleSystem
 		{
 		public:
@@ -30,12 +30,12 @@ namespace quarks
 				return particles.size();
 			}
 			void initializeSystem();
-			Particle* getParticle(int index)
+			const Particle& getParticle(int index)
 			{
 				return particles[index];
 			}
 			void stepForward(Scalar timeStep);
-			void addForce(quarks::forces::Force* f)
+			void addForce(quarks::forces::ForcePtr f)
 			{
 				forceManager.addForce(f);
 			}
@@ -43,7 +43,7 @@ namespace quarks
 			{
 				forceManager.clearForces();
 			}
-			void addSource(quarks::sources::Source* f)
+			void addSource(quarks::sources::SourcePtr f)
 			{
 				sourceManager.addSource(f);
 			}
@@ -51,7 +51,7 @@ namespace quarks
 			{
 				sourceManager.clearSources();
 			}
-			void addSoftBody(quarks::sources::SoftBodySource* f)
+			void addSoftBody(quarks::sources::SoftBodySourcePtr f)
 			{
 				softBodyManager.addSoftBody(f);
 			}
@@ -69,13 +69,11 @@ namespace quarks
 			void setClothSolverFlag(bool clothSolverFlag);
 
 		private:
-			std::vector<Particle*> particles;
-			std::vector<Spring*> springs;
+			std::vector<Particle> particles;
+			std::vector<Spring> springs;
 			collisions::Collision* collision;
 			bool IsCollisionRegistered;
-			void theadedOperation(Scalar timeStep);
 			void solveStep(int threadIndex, int numThreads, Scalar timeStep);
-			void killOldParticles(int threadIndex, int numThreads);
 			unsigned int steps;
 			SourceManager sourceManager;
 			ForceManager forceManager;

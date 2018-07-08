@@ -12,26 +12,33 @@ using namespace quarks::base_types;
 #include "../base_types/Particle.h"
 #include "../base_types/Spring.h"
 #include "../sources/Source.h"
-#include<map>
+#include <map>
 namespace quarks
 {
 	namespace solver
 	{
-
 		class SourceManager
 		{
 		public:
-			SourceManager();
-			virtual ~SourceManager();
-			void birthParticles(std::vector<Particle*> & particles, unsigned int time);
-			void addSource(quarks::sources::Source* f);
-			void clearSources();
+			SourceManager()
+			{
+				sources.clear();
+				maxID = 0;
+			}
+			virtual ~SourceManager(){};
+			void birthParticles(std::vector<Particle> & particles, unsigned int time);
+			inline void addSource(sources::SourcePtr f)
+			{
+				sources.push_back(f);
+			}
+			inline void clearSources()
+			{
+				sources.clear();
+			}
 		private:
-			Particle* birthSingleParticle(PosVec intPos, DirVec intVel, Scalar initLifeExpectancy);
-			std::vector<quarks::sources::Source*> sources;
+			std::vector<quarks::sources::SourcePtr> sources;
 			unsigned int maxID;
 		};
-
 	} /* namespace solver */
 } /* namespace quarks */
 #endif /* SOURCEMANAGER_H_ */

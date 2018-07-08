@@ -17,8 +17,12 @@ namespace quarks
 		class VDB_Force : public quarks::forces::Force
 		{
 		public:
-			VDB_Force(Scalar amp, DirVec dir, openvdb::VectorGrid::Ptr ptr);
-			virtual ~VDB_Force();
+			VDB_Force(Scalar amp, DirVec dir, openvdb::VectorGrid::Ptr ptr)
+			{
+				amplitude = amp;
+				gridPtr = ptr;
+			}
+			virtual ~VDB_Force(){};
 			DirVec calculateFoce(PosVec pos, DirVec vel);
 		private:
 			Scalar amplitude;

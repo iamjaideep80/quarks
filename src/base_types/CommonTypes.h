@@ -12,8 +12,8 @@ namespace quarks
 {
 	namespace base_types
 	{
-		typedef UT_Vector3 PosVec;
-		typedef UT_Vector3 DirVec;
+		typedef ::UT_Vector3 PosVec;
+		typedef ::UT_Vector3 DirVec;
 		typedef fpreal Scalar;
 		typedef std::multimap<int, int> SpringMap;
 	}

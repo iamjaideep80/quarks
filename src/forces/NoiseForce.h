@@ -14,8 +14,11 @@ namespace quarks
 		class Noise_Force : public quarks::forces::Force
 		{
 		public:
-			Noise_Force(Scalar amp);
-			virtual ~Noise_Force();
+			Noise_Force(Scalar amp)
+			{
+				amplitude = amp;
+			};
+			virtual ~Noise_Force(){};
 			DirVec calculateFoce(PosVec pos, DirVec vel);
 		private:
 			Scalar amplitude;

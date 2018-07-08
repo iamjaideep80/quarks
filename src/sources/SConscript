@@ -2,7 +2,7 @@
 
 Import('env')
 
-lib_src = ['Source.cpp','SourceData.cpp','SourceFactory.cpp','SphereSource.cpp','VDBSource.cpp','SoftBodySource.cpp','SoftBodyData.cpp']
+lib_src = ['SourceFactory.cpp','SphereSource.cpp','VDBSource.cpp','SoftBodySource.cpp','SoftBodyData.cpp']
 lib_target = 'sources'
 
 env.Append(CPPPATH = ['/opt/houdini/toolkit/include/','/home/jaideep/CGAL-4.3/include'])

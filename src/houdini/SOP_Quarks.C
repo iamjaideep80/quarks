@@ -51,10 +51,6 @@ SOP_Quarks::SOP_Quarks(OP_Network *net, const char *name, OP_Operator *op) :
 	if (!myOffsets)
 		myOffsets = allocIndirect(32);
 	// Now, flag that nothing has been built yet...
-	sourceGDP = NULL;
-	forceGDP = NULL;
-	collisionGDP = NULL;
-	softBodyGDP = NULL;
 	myLastCookTime = 0;
 }
 SOP_Quarks::~SOP_Quarks()
@@ -64,55 +60,36 @@ void SOP_Quarks::initSystem()
 {
 	adapter.setGdp(gdp);
 	adapter.initializeSystem();
-	if (collisionGDP)
+	if (inputGeo(int(InputIndex::COLLISION)))
 	{
-		adapter.setCollisions(collisionGDP);
+		adapter.setCollisions(inputGeo(int(InputIndex::COLLISION)));
 	}
-}
-void SOP_Quarks::stepForward(fpreal now)
-{
-	if (error() >= UT_ERROR_ABORT)
-		return;
-	if (sourceGDP)
-	{
-		adapter.setSources(sourceGDP);
-	}
-	if (forceGDP)
-	{
-		adapter.setForces(forceGDP);
-	}
-	if (softBodyGDP)
-	{
-		adapter.setSoftBodies(softBodyGDP);
-	}
-	fpreal fps = OPgetDirector()->getChannelManager()->getSamplesPerSec();
-	adapter.stepForward(gdp, fps / SIM_TIME_SCALE(), SUBSTEPS(now));
 }
 OP_ERROR SOP_Quarks::cookMySop(OP_Context &context)
 {
-//	boost::timer::auto_cpu_timer t;
-	fpreal reset, currframe;
-	CH_Manager *chman;
 	if (lockInputs(context) >= UT_ERROR_ABORT)
 		return error();
 	OP_Node::flags().timeDep = 1;
-	sourceGDP = inputGeo(0);
-	forceGDP = inputGeo(1);
-	collisionGDP = inputGeo(2);
-	softBodyGDP = inputGeo(3);
-	chman = OPgetDirector()->getChannelManager();
-	currframe = chman->getSample(context.getTime());
-	reset = RESET();
-	if (currframe <= reset)
+	CH_Manager* chman = OPgetDirector()->getChannelManager();
+	fpreal currframe = chman->getSample(context.getTime());
+	if (currframe <= RESET())
 	{
 		gdp->clearAndDestroy();
-		myLastCookTime = reset;
+		myLastCookTime = RESET();
 		initSystem();
 	}
 	currframe += 0.05;	// Add a bit to avoid floating point error
 	while (myLastCookTime < currframe)
 	{
-		stepForward(chman->getTime(myLastCookTime));
+		fpreal now = chman->getTime(myLastCookTime);
+		if (inputGeo(int(InputIndex::SOURCE)))
+			adapter.setSources(inputGeo(int(InputIndex::SOURCE)));
+		if (inputGeo(int(InputIndex::FORCE)))
+			adapter.setForces(inputGeo(int(InputIndex::FORCE)));
+		if (inputGeo(int(InputIndex::SOFTBODY)))
+			adapter.setSoftBodies(inputGeo(int(InputIndex::SOFTBODY)));
+		fpreal fps = OPgetDirector()->getChannelManager()->getSamplesPerSec();
+		adapter.stepForward(gdp, fps / SIM_TIME_SCALE(), SUBSTEPS(now));
 		myLastCookTime += 1;
 	}
 	fpreal fps = OPgetDirector()->getChannelManager()->getSamplesPerSec();

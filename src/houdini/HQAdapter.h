@@ -17,8 +17,8 @@ namespace quarks
 		class HQAdapter
 		{
 		public:
-			HQAdapter();
-			virtual ~HQAdapter();
+			HQAdapter(){};
+			virtual ~HQAdapter(){};
 			void initializeSystem();
 			void setSources(const GU_Detail* source);
 			void setSoftBodies(const GU_Detail* source);
@@ -30,12 +30,6 @@ namespace quarks
 
 		private:
 			quarks::solver::ParticleSystem quarks;
-			void addSources(const GU_Detail* source);
-			void clearSources();
-			void addSoftBodies(const GU_Detail* source);
-			void clearSoftBodies();
-			void addForces(const GU_Detail* force);
-			void clearForces();
 			GEO_PrimParticle* particlePrimPtr;
 			GU_Detail* gdp;
 			GA_RWAttributeRef idRef;

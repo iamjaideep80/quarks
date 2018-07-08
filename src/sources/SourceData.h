@@ -21,26 +21,21 @@ namespace quarks
 		{
 			SPHERE_SOURCE, VDB_SOURCE, SOFTBODY_SOURCE
 		};
-		class SourceData
+		struct SourceData
 		{
-		public:
-			SourceData(sourceType type, int rate, PosVec pos, Scalar size, Scalar lifeExpectancy,
-					openvdb::FloatGrid::Ptr gridPtr);
-			virtual ~SourceData();
-			const openvdb::FloatGrid::Ptr& getGridPtr() const;
-			void setGridPtr(const openvdb::FloatGrid::Ptr& gridPtr);
-			Scalar getLifeExpectancy() const;
-			void setLifeExpectancy(Scalar lifeExpectancy);
-			const PosVec& getPos() const;
-			void setPos(const PosVec& pos);
-			int getRate() const;
-			void setRate(int rate);
-			Scalar getSize() const;
-			void setSize(Scalar size);
-			sourceType getType() const;
-			void setType(sourceType type);
-
-		private:
+			SourceData(sourceType type,
+					int rate,
+					PosVec pos,
+					Scalar size,
+					Scalar lifeExpectancy,
+					openvdb::FloatGrid::Ptr gridPtr) :
+					type(type),
+					rate(rate),
+					pos(pos),
+					size(size),
+					lifeExpectancy(lifeExpectancy),
+					gridPtr(gridPtr)
+					{};
 			sourceType type;
 			int rate;
 			PosVec pos;

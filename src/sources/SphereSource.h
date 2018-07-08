@@ -15,7 +15,7 @@ namespace quarks
 		{
 		public:
 			SphereSource(Scalar rate, PosVec pos, Scalar size,Scalar lifeExpectancy);
-			virtual ~SphereSource();
+			virtual ~SphereSource(){};
 			std::vector<PosVec> requestPositions(unsigned int time);
 		private:
 			PosVec pos;

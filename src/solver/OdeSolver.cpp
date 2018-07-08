@@ -11,17 +11,6 @@ namespace quarks
 {
 	namespace solver
 	{
-
-		OdeSolver::OdeSolver()
-		{
-			// TODO Auto-generated constructor stub
-
-		}
-
-		OdeSolver::~OdeSolver()
-		{
-			// TODO Auto-generated destructor stub
-		}
 		static
 		void observer(const state_type& x, const double t)
 		{

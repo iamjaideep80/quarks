@@ -14,9 +14,15 @@ namespace quarks
 		class Drag_Force : public quarks::forces::Force
 		{
 		public:
-			Drag_Force(Scalar amp);
-			virtual ~Drag_Force();
-			DirVec calculateFoce(PosVec pos, DirVec vel);
+			inline Drag_Force(Scalar amp)
+			{
+				amplitude = amp;
+			}
+			inline virtual ~Drag_Force(){};
+			inline DirVec calculateFoce(PosVec pos, DirVec vel)
+			{
+				return -1 * amplitude * vel;
+			}
 		private:
 			Scalar amplitude;
 		};
