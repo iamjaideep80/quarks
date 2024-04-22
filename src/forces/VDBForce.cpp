@@ -1,22 +1,13 @@
-/*
- * VDBForce.cpp
- *
- *  Created on: 08-Mar-2014
- *      Author: jaideep
- */
+#include <openvdb/tools/Interpolation.h>
 #include "VDBForce.h"
-namespace quarks
-{
-	namespace forces
-	{
-		DirVec VDB_Force::calculateFoce(PosVec pos, DirVec vel)
-		{
-			const openvdb::Vec3R ijk(pos.x() / gridPtr->voxelSize().x(), pos.y() / gridPtr->voxelSize().y(),
-										pos.z() / gridPtr->voxelSize().z());
-			openvdb::Vec3f val(1,2,3);
-			openvdb::tools::PointSampler::sample(gridPtr->tree(), ijk, val);
-			DirVec output(amplitude * val.x(), amplitude * val.y(), amplitude * val.z());
-			return output;
-		}
-	} /* namespace forces */
-} /* namespace quarks */
+
+
+namespace quarks::forces {
+    DirVec VDB_Force::CalculateForce(PosVec pos, DirVec vel) const {
+        const openvdb::Vec3R ijk(pos.x() / grid_ptr_->voxelSize().x(), pos.y() / grid_ptr_->voxelSize().y(),
+                                 pos.z() / grid_ptr_->voxelSize().z());
+        openvdb::Vec3f val;
+        openvdb::tools::PointSampler::sample(grid_ptr_->tree(), ijk, val);
+        return amplitude_ * DirVec(val.x(), val.y(), val.z());
+    }
+} // namespace quarks::forces

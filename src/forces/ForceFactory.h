@@ -1,32 +1,17 @@
-/*
- * ForceFactory.h
- *
- *  Created on: 01-Mar-2014
- *      Author: jaideep
- */
 #ifndef FORCEFACTORY_H_
 #define FORCEFACTORY_H_
 #include "Force.h"
-#include "UniformForce.h"
-#include "DragForce.h"
-#include "NoiseForce.h"
-#include "VortexForce.h"
-#include "VDBForce.h"
 #include "ForceData.h"
-#include <openvdb/openvdb.h>
-#include <openvdb/Grid.h>
-#include <openvdb/tools/Interpolation.h>
-namespace quarks
-{
-	namespace forces
-	{
-		class ForceFactory
-		{
-		public:
-			ForceFactory(){};
-			virtual ~ForceFactory(){};
-			ForcePtr getForce(const ForceData& forceData);
-		};
-	} /* namespace forces */
-} /* namespace quarks */
+
+namespace quarks::forces {
+    class ForceFactory {
+    public:
+        ForceFactory() = default;
+
+        ~ForceFactory() = default;
+
+        static ForcePtr GetForce(const ForceData &force_data);
+    };
+} // namespace quarks::forces
+
 #endif /* FORCEFACTORY_H_ */

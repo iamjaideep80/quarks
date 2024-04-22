@@ -1,37 +1,26 @@
-/*
- * ForceFactory.cpp
- *
- *  Created on: 01-Mar-2014
- *      Author: jaideep
- */
 #include "ForceFactory.h"
-namespace quarks
-{
-	namespace forces
-	{
-		ForcePtr ForceFactory::getForce(const ForceData& forceData)
-		{
-			switch (forceData.type)
-			{
-			case 0:
-				return ForcePtr(new quarks::forces::Uniform_Force(forceData.amp, forceData.dir));
-				break;
-			case 1:
-				return ForcePtr(new quarks::forces::Drag_Force(forceData.amp));
-				break;
-			case 2:
-				return ForcePtr(new quarks::forces::Noise_Force(forceData.amp));
-				break;
-			case 3:
-				return ForcePtr(new quarks::forces::Vortex_Force(forceData.amp, forceData.dir));
-				break;
-			case 4:
-				return ForcePtr(new quarks::forces::VDB_Force(forceData.amp, forceData.dir, forceData.gridPtr));
-				break;
-			default:
-				return ForcePtr(new quarks::forces::Uniform_Force(forceData.amp, forceData.dir));
-				break;
-			}
-		}
-	} /* namespace forces */
-} /* namespace quarks */
+#include "UniformForce.h"
+#include "DragForce.h"
+#include "NoiseForce.h"
+#include "VortexForce.h"
+#include "VDBForce.h"
+
+namespace quarks::forces {
+    ForcePtr ForceFactory::GetForce(const ForceData &force_data) {
+        switch (force_data.type) {
+            case ForceType::UNIFORM_FORCE:
+                return std::make_shared<Uniform_Force>(force_data.amp, force_data.dir);
+            case ForceType::DRAG_FORCE:
+                return std::make_shared<Drag_Force>(force_data.amp);
+            case ForceType::NOISE_FORCE:
+                return std::make_shared<Noise_Force>(force_data.amp);
+            case ForceType::VORTEX_FORCE:
+                return std::make_shared<Vortex_Force>(force_data.amp, force_data.dir);
+            case ForceType::VDB_FORCE:
+                return std::make_shared<VDB_Force>(force_data.amp, force_data.dir, force_data.grid_ptr);
+            default:
+                std::cerr << "Error: Invalid force type encountered.\n";
+                return nullptr;
+        }
+    }
+} // namespace quarks::forces

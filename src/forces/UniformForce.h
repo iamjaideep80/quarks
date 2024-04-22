@@ -1,33 +1,23 @@
-/*
- * UniformForce.h
- *
- *  Created on: 24-Feb-2014
- *      Author: jaideep
- */
 #ifndef UNIFORMFORCE_H_
 #define UNIFORMFORCE_H_
 #include "Force.h"
-namespace quarks
-{
-	namespace forces
-	{
-		class Uniform_Force : public quarks::forces::Force
-		{
-		public:
-			Uniform_Force(Scalar amp, DirVec dir)
-			{
-				amplitude = amp;
-				direction = dir;
-			}
-			virtual ~Uniform_Force(){};
-			inline DirVec calculateFoce(PosVec pos, DirVec vel)
-			{
-				return amplitude * direction;
-			}
-		private:
-			Scalar amplitude;
-			DirVec direction;
-		};
-	} /* namespace forces */
-} /* namespace quarks */
+
+namespace quarks::forces {
+    class Uniform_Force : public Force {
+    public:
+        Uniform_Force(const Scalar amp, const DirVec dir): amplitude_(amp), direction_(dir) {
+        }
+
+        ~Uniform_Force() override = default;
+
+        DirVec CalculateForce(PosVec pos, DirVec vel) const override {
+            return amplitude_ * direction_;
+        }
+
+    private:
+        Scalar amplitude_;
+        DirVec direction_;
+    };
+} // namespace quarks::forces
+
 #endif /* UNIFORMFORCE_H_ */

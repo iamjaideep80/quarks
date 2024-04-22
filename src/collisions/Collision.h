@@ -1,37 +1,26 @@
-/*
- * Collision.h
- *
- *  Created on: 08-Mar-2014
- *      Author: jaideep
- */
 #ifndef COLLISION_H_
 #define COLLISION_H_
-#include <openvdb/openvdb.h>
-#include <openvdb/Grid.h>
-#include <openvdb/tools/Interpolation.h>
-#include <openvdb/math/Operators.h>
-#include <openvdb/math/FiniteDifference.h>
+
 #include "CollisionData.h"
-namespace quarks
-{
-	namespace collisions
-	{
-		class Collision
-		{
-		public:
-			Collision(CollisionData	 collisionData);
-			virtual ~Collision(){};
-			inline const openvdb::FloatGrid::Ptr& getGridPtr() const
-			{
-				return gridPtr;
-			}
-			void applyCollision(const PosVec& oldPos, const DirVec& oldVel, PosVec& newPos, DirVec& newVel);
-		private:
-			openvdb::FloatGrid::Ptr gridPtr;
-			Scalar gainTangent;
-			Scalar gainNormal;
-			Scalar outerIsoVal;
-		};
-	}
-} /* namespace quarks */
+
+namespace quarks::collisions {
+    class Collision {
+    public:
+        explicit Collision(const CollisionData &collision_data);
+
+        ~Collision() = default;
+
+        const openvdb::FloatGrid::ConstPtr &getGridPtr() const {
+            return grid_ptr_;
+        }
+
+        void ApplyCollision(const PosVec &old_pos, const DirVec &old_vel, PosVec &new_pos, DirVec &new_vel) const;
+
+    private:
+        openvdb::FloatGrid::ConstPtr grid_ptr_;
+        Scalar gain_tangent_;
+        Scalar gain_normal_;
+        Scalar outer_iso_val_;
+    };
+}
 #endif /* COLLISION_H_ */

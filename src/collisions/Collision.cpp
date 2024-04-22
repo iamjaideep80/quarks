@@ -1,52 +1,41 @@
-/*
- * Collision.cpp
- *
- *  Created on: 08-Mar-2014
- *      Author: jaideep
- */
 #include "../base_types/CommonTypes.h"
 #include "Collision.h"
 
-namespace quarks
-{
-	namespace collisions
-	{
-		Collision::Collision(CollisionData collisionData)
-		{
-			gridPtr = collisionData.gridPtr;
-			this->gainTangent = collisionData.gainTangent;
-			this->gainNormal = collisionData.gainNormal;
-			this->outerIsoVal = collisionData.isoVal;
-		}
+#include <openvdb/math/Operators.h>
+#include <openvdb/tools/Interpolation.h>
 
-		void Collision::applyCollision(const PosVec& oldPos, const DirVec& oldVel, PosVec& newPos,
-				DirVec& newVel)
-		{
-			const openvdb::Vec3R ijk(newPos.x() / gridPtr->voxelSize().x(),
-										newPos.y() / gridPtr->voxelSize().y(),
-										newPos.z() / gridPtr->voxelSize().z());
-			float sdfVal;
-			openvdb::tools::PointSampler::sample(gridPtr->tree(), ijk, sdfVal);
-			Scalar innerIsoVal = 0;
-			if (sdfVal < outerIsoVal)
-			{
-				openvdb::Coord xyz(ijk.x(), ijk.y(), ijk.z());
-				openvdb::math::Vec3d gradVal = openvdb::math::ISGradient<openvdb::math::CD_2ND>::result(
-						gridPtr->getAccessor(), xyz);
-				DirVec gradDir(gradVal.x(), gradVal.y(), gradVal.z());
-				gradDir.normalize();
-				Scalar normalDot = newVel.dot(gradDir);
-				DirVec normalComp = normalDot * gradDir;
-				DirVec tangentComp = newVel - normalComp;
-				DirVec responseNormalComp = std::abs(normalDot) * gradDir;
-				responseNormalComp = responseNormalComp * gainNormal;
-				tangentComp = tangentComp * gainTangent;
-				newVel = responseNormalComp + tangentComp;
-			}
-			if (sdfVal < innerIsoVal)
-			{
-				newPos = oldPos;
-			}
-		}
-	}
-} /* namespace quarks */
+
+namespace quarks::collisions {
+    Collision::Collision(const CollisionData &collision_data) {
+        grid_ptr_ = collision_data.grid_ptr;
+        gain_tangent_ = collision_data.gain_tangent;
+        gain_normal_ = collision_data.gain_normal;
+        outer_iso_val_ = collision_data.iso_val;
+    }
+
+    void Collision::ApplyCollision(const PosVec &old_pos, const DirVec &old_vel, PosVec &new_pos,
+                                   DirVec &new_vel) const {
+        const openvdb::Vec3R ijk(new_pos.x() / grid_ptr_->voxelSize().x(),
+                                 new_pos.y() / grid_ptr_->voxelSize().y(),
+                                 new_pos.z() / grid_ptr_->voxelSize().z());
+        float sdf_val;
+        openvdb::tools::PointSampler::sample(grid_ptr_->tree(), ijk, sdf_val);
+        if (sdf_val < outer_iso_val_) {
+            const openvdb::Coord xyz(ijk.x(), ijk.y(), ijk.z());
+            openvdb::math::Vec3d grad_val = openvdb::math::ISGradient<openvdb::math::CD_2ND>::result(
+                grid_ptr_->getAccessor(), xyz);
+            DirVec grad_dir(grad_val.x(), grad_val.y(), grad_val.z());
+            grad_dir.normalize();
+            const Scalar normal_dot = new_vel.dot(grad_dir);
+            const DirVec normal_comp = normal_dot * grad_dir;
+            DirVec tangent_comp = new_vel - normal_comp;
+            DirVec response_normal_comp = std::abs(normal_dot) * grad_dir;
+            response_normal_comp = response_normal_comp * gain_normal_;
+            tangent_comp = tangent_comp * gain_tangent_;
+            new_vel = response_normal_comp + tangent_comp;
+        }
+        if (constexpr Scalar inner_iso_val = 0; sdf_val < inner_iso_val) {
+            new_pos = old_pos;
+        }
+    }
+}

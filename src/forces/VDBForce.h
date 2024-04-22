@@ -1,33 +1,24 @@
-/*
- * VDBForce.h
- *
- *  Created on: 08-Mar-2014
- *      Author: jaideep
- */
 #ifndef VDBFORCE_H_
 #define VDBFORCE_H_
 #include "Force.h"
 #include <openvdb/openvdb.h>
 #include <openvdb/Grid.h>
-#include <openvdb/tools/Interpolation.h>
-namespace quarks
-{
-	namespace forces
-	{
-		class VDB_Force : public quarks::forces::Force
-		{
-		public:
-			VDB_Force(Scalar amp, DirVec dir, openvdb::VectorGrid::Ptr ptr)
-			{
-				amplitude = amp;
-				gridPtr = ptr;
-			}
-			virtual ~VDB_Force(){};
-			DirVec calculateFoce(PosVec pos, DirVec vel);
-		private:
-			Scalar amplitude;
-			openvdb::VectorGrid::Ptr gridPtr;
-		};
-	} /* namespace forces */
-} /* namespace quarks */
+
+namespace quarks::forces {
+    class VDB_Force : public Force {
+    public:
+        VDB_Force(const Scalar amp, const DirVec dir, openvdb::VectorGrid::ConstPtr ptr) : amplitude_(amp),
+            grid_ptr_(ptr) {
+        };
+
+        ~VDB_Force() override = default;
+
+        DirVec CalculateForce(PosVec pos, DirVec vel) const override;
+
+    private:
+        Scalar amplitude_;
+        openvdb::VectorGrid::ConstPtr grid_ptr_;
+    };
+} // namespace quarks::forces
+
 #endif /* VDBFORCE_H_ */

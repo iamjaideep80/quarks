@@ -6,3 +6,8 @@
 *.a
 .cproject
 .settings/language.settings.xml
+.vs
+/src/out/build/x64-Debug
+/src/.idea
+/src/cmake-build-debug
+/.idea

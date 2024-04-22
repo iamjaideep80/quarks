@@ -1,44 +1,33 @@
-/*
- * SourceManager.h
- *
- *  Created on: 22-Mar-2014
- *      Author: jaideep
- */
-
 #ifndef SOURCEMANAGER_H_
 #define SOURCEMANAGER_H_
-#include "../base_types/CommonTypes.h"
-using namespace quarks::base_types;
 #include "../base_types/Particle.h"
-#include "../base_types/Spring.h"
 #include "../sources/Source.h"
-#include <map>
-namespace quarks
-{
-	namespace solver
-	{
-		class SourceManager
-		{
-		public:
-			SourceManager()
-			{
-				sources.clear();
-				maxID = 0;
-			}
-			virtual ~SourceManager(){};
-			void birthParticles(std::vector<Particle> & particles, unsigned int time);
-			inline void addSource(sources::SourcePtr f)
-			{
-				sources.push_back(f);
-			}
-			inline void clearSources()
-			{
-				sources.clear();
-			}
-		private:
-			std::vector<quarks::sources::SourcePtr> sources;
-			unsigned int maxID;
-		};
-	} /* namespace solver */
-} /* namespace quarks */
+
+
+namespace quarks::solver {
+    class SourceManager {
+    public:
+        SourceManager() {
+            sources_.clear();
+            max_id_ = 0;
+        }
+
+        ~SourceManager() = default;
+
+        void BirthParticles(std::vector<Particle> &particles, unsigned int time);
+
+        void AddSource(sources::SourcePtr ptr) {
+            sources_.push_back(ptr);
+        }
+
+        void ClearSources() {
+            sources_.clear();
+        }
+
+    private:
+        std::vector<sources::SourcePtr> sources_;
+        unsigned int max_id_;
+    };
+} // namespace quarks::solver
+
 #endif /* SOURCEMANAGER_H_ */

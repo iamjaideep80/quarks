@@ -1,13 +1,30 @@
-# quarks
-Quarks Particle Solver and Cloth Solver
+# Quarks
+Quarks is a particle dynamics and cloth solver written in C++ along with 
+a Houdini HDK plugin that makes it accessible within Houdini. 
 
-Use scons to compile the project.
+https://vimeo.com/121535322
 
-Changing Solver Logic
+## Features
+- Particle dynamics
+- Cloth simulation (mass-spring system)
+- Sources (Sphere, VDB etc.)
+- Forces (Uniform, Drag, Noise, VDB, Vortex etc.)
+- Collision detection (VDB collisions)
+- Houdini HDK plugin
+- Multithreading
+- Houdini Digital Assets
+- Houdini Example Files
+
+## Dependencies
+- Boost 1.85
+- Houdini 20
+- CMake 3.6
+
+## Quarks Class Diagram
+![img.png](images/class_diagram.png)
 
 
----------------Optimization-----------------
+## Quarks HDK Plugin + Houdini Digital Assets
+![img.png](images/houdini_nodes_1.png)
 
-profiling_a_04.hip
-
-6c6c1c48507475f2db832dc65128f3efc7d2be02 --- 20 sec
+![img.png](images/houdini_nodes_2.png)

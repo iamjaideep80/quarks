@@ -1,85 +1,78 @@
-/*
- * VDBSource.h
- *
- *  Created on: 09-Mar-2014
- *      Author: jaideep
- */
 #ifndef SOFTBODYSOURCE_H_
 #define SOFTBODYSOURCE_H_
 #include <openvdb/openvdb.h>
-#include <openvdb/Grid.h>
+
 #include <openvdb/tools/Interpolation.h>
 #include <openvdb/tools/PointScatter.h>
 #include "Source.h"
 #include "SoftBodyData.h"
-namespace quarks
-{
-	namespace sources
-	{
-		class SoftBodySource : public quarks::sources::Source
-		{
-		public:
-			SoftBodySource(SoftBodyData softBodyData);
-			virtual ~SoftBodySource(){};
-			inline std::vector<PosVec> requestPositions(unsigned int time)
-			{
-				return initPosVec;
-			}
-			inline PosVec requestPositions(unsigned int time,int pointNum)
-			{
-				return initPosVec[pointNum];
-			}
-			inline std::vector<bool> requestFixPoints(unsigned int time)
-			{
-				return fixVec;
-			}
-			inline SpringMap requestSpringMap(unsigned int time)
-			{
-				return springMap;
-			}
-			inline void insertSpring(int indexA, int indexB)
-			{
-				springMap.insert(std::pair<int, int>(indexA, indexB));
-			}
-			inline void insertPoint(PosVec initPos)
-			{
-				this->initPosVec.push_back(initPos);
-				birthRate++;
-			}
-			inline Scalar getSpringConstant() const
-			{
-				return springConstant;
-			}
-			inline void setSpringConstant(Scalar springConstant)
-			{
-				this->springConstant = springConstant;
-			}
-			inline Scalar getDampingConstant() const
-			{
-				return dampingConstant;
-			}
-			inline void setDampingConstant(Scalar dampingConstant)
-			{
-				this->dampingConstant = dampingConstant;
-			}
-			inline bool isActive() const
-			{
-				return active;
-			}
-			inline void setActive(bool active)
-			{
-				this->active = active;
-			}
 
-		private:
-			std::vector<PosVec> initPosVec;
-			std::vector<bool> fixVec;
-			SpringMap springMap;
-			Scalar springConstant;
-			Scalar dampingConstant;
-			bool active;
-		};
-		using SoftBodySourcePtr = std::shared_ptr<SoftBodySource>;
-	} /* namespace sources */
-} /* namespace quarks */
+namespace quarks::sources {
+    class SoftBodySource : public Source {
+    public:
+        explicit SoftBodySource(const SoftBodyData &softBodyData);
+
+        ~SoftBodySource() override = default;
+
+        std::vector<PosVec> RequestPositions(unsigned int time) override {
+            return init_pos_vec_;
+        }
+
+        PosVec RequestPosition(int pointNum) const {
+            return init_pos_vec_[pointNum];
+        }
+
+        std::vector<bool> RequestFixPoints(unsigned int time) {
+            return fix_vec_;
+        }
+
+        SpringMap RequestSpringMap(unsigned int time) {
+            return spring_map_;
+        }
+
+        void InsertSpring(int indexA, int indexB) {
+            spring_map_.insert(std::pair<int, int>(indexA, indexB));
+        }
+
+        void InsertPoint(const PosVec &initPos) {
+            init_pos_vec_.push_back(initPos);
+            birth_rate_++;
+        }
+
+        Scalar GetStiffnessConstant() const {
+            return sprint_constant_;
+        }
+
+        void SetStiffnessConstant(const Scalar stiffness_constant) {
+            sprint_constant_ = stiffness_constant;
+        }
+
+        Scalar GetDampingConstant() const {
+            return damping_constant_;
+        }
+
+        void SetDampingConstant(const Scalar damping_constant) {
+            damping_constant_ = damping_constant;
+        }
+
+        bool IsActive() const {
+            return active_;
+        }
+
+        void SetActive(const bool active) {
+            active_ = active;
+        }
+
+    private:
+        std::vector<PosVec> init_pos_vec_;
+        std::vector<bool> fix_vec_;
+        SpringMap spring_map_;
+        Scalar sprint_constant_;
+        Scalar damping_constant_;
+        bool active_;
+    };
+
+    using SoftBodySourcePtr = std::shared_ptr<SoftBodySource>;
+} // namespace quarks::sources
+
 #endif /* SOFTBODYSOURCE_H_ */

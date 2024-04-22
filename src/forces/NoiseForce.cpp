@@ -1,24 +1,13 @@
-/*
- * DragForce.cpp
- *
- *  Created on: 24-Feb-2014
- *      Author: jaideep
- */
 #include "NoiseForce.h"
-namespace quarks
-{
-	namespace forces
-	{
-		DirVec Noise_Force::calculateFoce(PosVec pos, DirVec vel)
-		{
-			DirVec oldVel = vel;
-			oldVel.normalize();
-			DirVec randomVel(SYSdrand48() - .5, SYSdrand48() - .5, SYSdrand48() - .5);
-			randomVel.normalize();
-			DirVec newVel = 0.5 * oldVel + 0.5 * randomVel;
-			newVel.normalize();
-			return amplitude * newVel;
-			return vel;
-		}
-	} /* namespace forces */
-} /* namespace quarks */
+
+namespace quarks::forces {
+    DirVec Noise_Force::CalculateForce(const PosVec pos, const DirVec vel) const {
+        DirVec old_vel = vel;
+        old_vel.normalize();
+        DirVec random_vel(SYSdrand48() - .5, SYSdrand48() - .5, SYSdrand48() - .5);
+        random_vel.normalize();
+        DirVec new_vel = 0.5 * old_vel + 0.5 * random_vel;
+        new_vel.normalize();
+        return amplitude_ * new_vel;
+    }
+} // namespace quarks::forces

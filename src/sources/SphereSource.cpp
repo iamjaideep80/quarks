@@ -1,42 +1,24 @@
-/*
- * SphereSource.cpp
- *
- *  Created on: 02-Mar-2014
- *      Author: jaideep
- */
-#include <CGAL/Cartesian_d.h>
-#include <CGAL/point_generators_d.h>
 #include "SphereSource.h"
-typedef CGAL::Cartesian_d<double> Kd;
-typedef Kd::Point_d Point;
-namespace quarks
-{
-	namespace sources
-	{
-		SphereSource::SphereSource(Scalar rate, PosVec pos, Scalar size, Scalar lifeExpectancy)
-		{
-			birthRate = rate;
-			this->pos = pos;
-			this->size = size;
-			this->lifeExpectancy = lifeExpectancy;
-			myType = SPHERE_SOURCE;
-		}
-		std::vector<PosVec> SphereSource::requestPositions(unsigned int time)
-		{
-			int nb_points = birthRate;
-			int dim = 3;
-			double size = this->size;
-			std::vector<PosVec> v;
-			v.reserve(nb_points);
-			CGAL::Random rand(time);
-			CGAL::Random_points_on_sphere_d<Point> gen(dim, size, rand);
-			for (int i = 0; i < nb_points; ++i)
-			{
-				Point tmp_point = *gen++;
-				PosVec pos(tmp_point[0], tmp_point[1], tmp_point[2]);
-				v.push_back(pos + this->pos);
-			}
-			return v;
-		}
-	} /* namespace sources */
-} /* namespace quarks */
+
+namespace quarks::sources {
+    SphereSource::SphereSource(Scalar rate, PosVec pos, Scalar size,
+                               Scalar lifeExpectancy) : Source(rate, lifeExpectancy), pos_(pos), size_(size) {
+        type_ = SourceType::SPHERE_SOURCE;
+    }
+
+    std::vector<PosVec> SphereSource::RequestPositions(unsigned int time) {
+        std::vector<PosVec> positions;
+        positions.reserve(birth_rate_);
+
+        for (int i = 0; i < birth_rate_; i++) {
+            const Scalar theta = 2 * M_PI * (rand() / (Scalar) RAND_MAX);
+            const Scalar phi = acos(1 - 2 * (rand() / (Scalar) RAND_MAX));
+            const Scalar x = sin(phi) * cos(theta);
+            const Scalar y = sin(phi) * sin(theta);
+            const Scalar z = cos(phi);
+            PosVec pos = {x * size_ + pos_[0], y * size_ + pos_[1], z * size_ + pos_[2]};
+            positions.push_back(pos);
+        }
+        return positions;
+    }
+} // namespace quarks::sources

@@ -1,34 +1,24 @@
-/*
- * UniformForce.h
- *
- *  Created on: 24-Feb-2014
- *      Author: jaideep
- */
 #ifndef VORTEXFORCE_H_
 #define VORTEXFORCE_H_
 #include "Force.h"
-namespace quarks
-{
-	namespace forces
-	{
-		class Vortex_Force : public quarks::forces::Force
-		{
-		public:
-			Vortex_Force(Scalar amp, DirVec dir)
-			{
-				amplitude = amp;
-				direction = dir;
-			}
-			virtual ~Vortex_Force(){};
-			inline DirVec calculateFoce(PosVec pos, DirVec vel)
-			{
-				DirVec modPos = pos - dot(direction, pos) * direction;
-				return amplitude * cross(modPos, direction);
-			}
-		private:
-			Scalar amplitude;
-			DirVec direction;
-		};
-	} /* namespace forces */
-} /* namespace quarks */
+
+namespace quarks::forces {
+    class Vortex_Force : public Force {
+    public:
+        Vortex_Force(const Scalar amp, const DirVec dir) : amplitude_(amp), direction_(dir) {
+        }
+
+        ~Vortex_Force() override = default;
+
+        DirVec CalculateForce(const PosVec pos, const DirVec vel) const override {
+            const DirVec modPos = pos - dot(direction_, pos) * direction_;
+            return amplitude_ * cross(modPos, direction_);
+        }
+
+    private:
+        Scalar amplitude_;
+        DirVec direction_;
+    };
+} // namespace quarks::forces
+
 #endif /* VORTEXFORCE_H_ */

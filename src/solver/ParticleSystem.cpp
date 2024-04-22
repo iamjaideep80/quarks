@@ -1,113 +1,82 @@
-#include <boost/numeric/odeint.hpp>
-#include <CGAL/Cartesian_d.h>
-#include <CGAL/point_generators_d.h>
-#include <openvdb/math/Operators.h>
-#include <openvdb/math/FiniteDifference.h>
+#include "ParticleSystem.h"
 #include "OdeSolver.h"
 #include <thread>
-#include <math.h>
-#include "ParticleSystem.h"
-#include <chrono>
-typedef CGAL::Cartesian_d<double> Kd;
-typedef Kd::Point_d Point;
-namespace quarks
-{
-	namespace solver
-	{
-		ParticleSystem::ParticleSystem()
-		{
-			particles.reserve(MAX_NUM_PARTICLES);
-			collision = NULL;
-			IsCollisionRegistered = false;
-			clothSolverFlag = false;
-			initializeSystem();
-		}
-		void ParticleSystem::initializeSystem()
-		{
-			particles.clear();
-			springs.clear();
-			steps = 0;
-		}
-		bool ParticleSystem::isClothSolverFlag() const
-		{
-			return clothSolverFlag;
-		}
 
-		void ParticleSystem::setClothSolverFlag(bool clothSolverFlag)
-		{
-			this->clothSolverFlag = clothSolverFlag;
-		}
+namespace quarks::solver {
+    ParticleSystem::ParticleSystem(): collision_(nullptr), is_collision_registered_(false), steps_(0),
+                                      cloth_solver_flag_(false) {
+        particles_.reserve(MAX_NUM_PARTICLES);
+        InitializeSystem();
+    }
 
-		void ParticleSystem::stepForward(Scalar timeStep)
-		{
-//			std::cout << "-------------------------------------" << std::endl;
-			auto start = std::chrono::steady_clock::now();
-			sourceManager.birthParticles(particles, steps);
-			auto checkpoint1 = std::chrono::steady_clock::now();
-//			std::cout << std::chrono::duration <double, std::milli> (checkpoint1-start).count() << " ms" << std::endl;
+    void ParticleSystem::InitializeSystem() {
+        particles_.clear();
+        springs_.clear();
+        steps_ = 0;
+    }
 
-			softBodyManager.birthParticles(particles, springs, steps);
-			auto checkpoint2 = std::chrono::steady_clock::now();
-//			std::cout << std::chrono::duration <double, std::milli> (checkpoint2-checkpoint1).count() << " ms" << std::endl;
+    bool ParticleSystem::IsClothSolverFlag() const {
+        return cloth_solver_flag_;
+    }
 
+    void ParticleSystem::SetClothSolverFlag(const bool cloth_solver_flag) {
+        cloth_solver_flag_ = cloth_solver_flag;
+    }
 
-			forceManager.accumulateInternalForces(springs);
-			auto checkpoint3 = std::chrono::steady_clock::now();
-//			std::cout << std::chrono::duration <double, std::milli> (checkpoint3-checkpoint2).count() << " ms" << std::endl;
+    void ParticleSystem::StepForward(Scalar time_step) {
+        source_manager_.BirthParticles(particles_, steps_);
+        soft_body_manager_.BirthParticles(particles_, springs_, steps_);
+        ForceManager::AccumulateInternalForces(springs_);
 
-			int numOfThreads = std::thread::hardware_concurrency() - 1;
+        unsigned int num_of_threads = std::thread::hardware_concurrency() - 1;
+        if (num_of_threads == 0)
+            num_of_threads = 1;
 
-			std::vector<std::thread> threadsA;
-			for (unsigned i = 0; i < numOfThreads; i++)
-				threadsA.push_back(std::thread(&ParticleSystem::solveStep, this, i, numOfThreads,timeStep));
+        std::vector<std::thread> threads;
+        for (unsigned i = 0; i < num_of_threads; i++)
+            threads.emplace_back(&ParticleSystem::SolveStep, this, i, num_of_threads, time_step);
 
-			for (auto& thread : threadsA)
-				thread.join();
+        for (auto &thread: threads)
+            thread.join();
 
-			auto checkpoint4 = std::chrono::steady_clock::now();
-//			std::cout << std::chrono::duration <double, std::milli> (checkpoint4-checkpoint3).count() << " ms" << std::endl;
-			steps++;
-		}
+        steps_++;
+    }
 
-		void ParticleSystem::solveStep(int threadIndex, int numThreads, Scalar timeStep)
-		{
-			for (int i = threadIndex; i < particles.size(); i += numThreads)
-			{
-				Particle& particle = particles[i];
-				if (particle.life > particle.lifeExpectancy)
-				{
-					continue;
-				}
+    void ParticleSystem::SolveStep(const int thread_index, const int num_threads, const Scalar time_step) {
+        for (int i = thread_index; i < particles_.size(); i += num_threads) {
+            Particle &particle = particles_[i];
+            if (particle.life > particle.life_expectancy) {
+                continue;
+            }
 
-				forceManager.accumulateExternalForces(particle);
+            force_manager_.AccumulateExternalForces(particle);
 
-				PosVec oldPos = particle.position;
-				DirVec oldVel = particle.velocity;
-				DirVec oldForce = particle.force / particle.mass;
-				PosVec newPos;
-				DirVec newVel;
-				OdeSolver odeSolver;
+            PosVec old_pos = particle.position;
+            DirVec old_vel = particle.velocity;
+            DirVec old_acc = particle.force / particle.mass;
+            PosVec new_pos;
+            DirVec new_vel;
 
-				if (particle.isFixed)
-				{
-					particle.position = softBodyManager.getConstraintPos(particle.softBodySourceNum,
-																			particle.softBodyPointNum);
-					continue;
-				}
+            if (particle.is_fixed) {
+                new_pos = soft_body_manager_.GetConstraintPos(particle.soft_body_source_num,
+                                                              particle.soft_body_point_num);
+                particle.position = new_pos;
+                particle.velocity = (new_pos - old_pos) / time_step;
+                continue;
+            }
 
-				if (clothSolverFlag)
-					odeSolver.applyRK4(timeStep, oldPos, oldVel, oldForce, newPos, newVel);
-				else
-					odeSolver.applyEuler(timeStep, oldPos, oldVel, oldForce, newPos, newVel);
+            if (cloth_solver_flag_)
+                OdeSolver::ApplyRK4(time_step, old_pos, old_vel, old_acc, new_pos, new_vel);
+            else
+                OdeSolver::ApplyEuler(time_step, old_pos, old_vel, old_acc, new_pos, new_vel);
 
-				if (IsCollisionRegistered)
-					collision->applyCollision(oldPos, oldVel, newPos, newVel);
+            if (is_collision_registered_)
+                collision_->ApplyCollision(old_pos, old_vel, new_pos, new_vel);
 
-				particle.position = newPos;
-				particle.velocity = newVel;
-				particle.life++;
-				particle.force = 0;
-			}
-		}
-	}
-} /* namespace quarks */
+            particle.position = new_pos;
+            particle.velocity = new_vel;
+            particle.life++;
+            particle.force = 0;
+        }
+    }
+}

@@ -1,9 +1,3 @@
-/*
- * VDBSource.h
- *
- *  Created on: 09-Mar-2014
- *      Author: jaideep
- */
 #ifndef VDBSOURCE_H_
 #define VDBSOURCE_H_
 #include <openvdb/openvdb.h>
@@ -11,19 +5,19 @@
 #include <openvdb/tools/Interpolation.h>
 #include <openvdb/tools/PointScatter.h>
 #include "Source.h"
-namespace quarks
-{
-	namespace sources
-	{
-		class VDB_Source : public quarks::sources::Source
-		{
-		public:
-			VDB_Source(Scalar rate, openvdb::FloatGrid::Ptr ptr,Scalar lifeExpectancy);
-			virtual ~VDB_Source();
-			std::vector<PosVec> requestPositions(unsigned int time);
-		private:
-			openvdb::FloatGrid::Ptr gridPtr;
-		};
-	} /* namespace sources */
-} /* namespace quarks */
+
+namespace quarks::sources {
+    class VDB_Source : public Source {
+    public:
+        VDB_Source(Scalar rate, openvdb::FloatGrid::ConstPtr ptr, Scalar lifeExpectancy);
+
+        virtual ~VDB_Source();
+
+        std::vector<PosVec> RequestPositions(unsigned int time);
+
+    private:
+        openvdb::FloatGrid::ConstPtr grid_ptr_;
+    };
+} // namespace quarks::sources
+
 #endif /* VDBSOURCE_H_ */

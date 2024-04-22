@@ -1,43 +1,38 @@
-/*
- * ForceManager.h
- *
- *  Created on: 22-Mar-2014
- *      Author: jaideep
- */
-
 #ifndef FORCEMANAGER_H_
 #define FORCEMANAGER_H_
+#include <vector>
 #include "../base_types/CommonTypes.h"
-using namespace quarks::base_types;
+
 #include "../base_types/Particle.h"
 #include "../base_types/Spring.h"
 #include "../forces/Force.h"
-namespace quarks
-{
-	namespace solver
-	{
-		class ForceManager
-		{
-		public:
-			ForceManager(){};
-			virtual ~ForceManager(){};
-			inline void addForce(forces::ForcePtr f)
-			{
-				forces.push_back(f);
-			};
-			inline void clearForces()
-			{
-				forces.clear();
-			}
-			inline void accumulateExternalForces(Particle& particle)
-			{
-				for (int j = 0; j < forces.size(); j++)
-					particle.force += forces[j]->calculateFoce(particle.position,particle.velocity);
-			};
-			void accumulateInternalForces(std::vector<Spring> & springs);
-		private:
-			std::vector<forces::ForcePtr> forces;
-		};
-	} /* namespace solver */
-} /* namespace quarks */
+
+
+namespace quarks::solver {
+    class ForceManager {
+    public:
+        ForceManager() = default;
+
+        virtual ~ForceManager() = default;
+
+        void AddForce(forces::ForcePtr ptr) {
+            forces_.push_back(ptr);
+        };
+
+        void ClearForces() {
+            forces_.clear();
+        }
+
+        void AccumulateExternalForces(Particle &particle) const {
+            for (const auto &force: forces_)
+                particle.force += force->CalculateForce(particle.position, particle.velocity);
+        };
+
+        static void AccumulateInternalForces(std::vector<Spring> &springs);
+
+    private:
+        std::vector<forces::ForcePtr> forces_;
+    };
+} // namespace quarks::solver
+
 #endif /* FORCEMANAGER_H_ */

@@ -1,50 +1,49 @@
-#ifndef __SOP_SParticle_h__
-#define __SOP_SParticle_h__
+#ifndef SOP_Quarks_h_
+#define SOP_Quarks_h_
+
 #include "HQAdapter.h"
 #include <SOP/SOP_Node.h>
-#define INT_PARM(name, idx, vidx, t)	\
-	    return evalInt(name, &myOffsets[idx], vidx, t);
-#define FLT_PARM(name, idx, vidx, t)	\
-	    return evalFloat(name, &myOffsets[idx], vidx, t);
-class GEO_ParticleVertex;
-class GEO_PrimParticle;
-class GU_RayIntersect;
-namespace HDK_Sample
-{
-	class SOP_Quarks : public SOP_Node
-	{
-	public:
-		SOP_Quarks(OP_Network *net, const char *name, OP_Operator *op);
-		virtual ~SOP_Quarks();
-		static PRM_Template myTemplateList[];
-		static OP_Node *myConstructor(OP_Network*, const char *, OP_Operator *);
-	protected:
-		virtual const char *inputLabel(unsigned idx) const;
-		void initSystem();
-		virtual OP_ERROR cookMySop(OP_Context &context);
-	private:
-		enum class InputIndex
-		{
-			SOURCE,
-			FORCE,
-			COLLISION,
-			SOFTBODY
-		};
-		int RESET()
-		{
-			INT_PARM("reset", 0, 0, 0)
-		}
-		int SUBSTEPS(fpreal t)
-		{
-			INT_PARM("subSteps", 2, 0, t)
-		}
-		float SIM_TIME_SCALE()
-		{
-			return evalFloat("sim_time_scale", 0, 0);
-		}
-		fpreal myLastCookTime;	// Last cooked time
-		static int *myOffsets;
-		quarks::houdini::HQAdapter adapter;
-	};
-} // End HDK_Sample namespace
+
+class SOP_Quarks : public SOP_Node {
+public:
+    SOP_Quarks(OP_Network *net, const char *name, OP_Operator *op);
+
+    ~SOP_Quarks() override = default;
+
+    static PRM_Template myTemplateList[];
+
+    static OP_Node *myConstructor(OP_Network *, const char *, OP_Operator *);
+
+protected:
+    const char *inputLabel(unsigned idx) const override;
+
+    void InitializeSystem();
+
+    OP_ERROR cookMySop(OP_Context &context) override;
+
+private:
+    enum class InputIndex {
+        SOURCE,
+        FORCE,
+        COLLISION,
+        SOFTBODY
+    };
+
+    int RESET() const {
+        return evalInt("reset", 0, 0);
+    }
+
+    int SUBSTEPS(const fpreal t) const {
+        return evalInt("subSteps", 0, t);
+    }
+
+    fpreal SIM_TIME_SCALE() const {
+        return evalFloat("sim_time_scale", 0, 0);
+    }
+
+    fpreal myLastCookTime; // Last cooked time
+    static int *myOffsets;
+    quarks::houdini::HQAdapter adapter;
+};
+
 #endif

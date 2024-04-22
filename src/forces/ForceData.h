@@ -1,41 +1,29 @@
-/*
- * ForceData.h
- *
- *  Created on: 21-Mar-2014
- *      Author: jaideep
- */
-
 #ifndef FORCEDATA_H_
 #define FORCEDATA_H_
 #include "../base_types/CommonTypes.h"
-using namespace quarks::base_types;
 #include <openvdb/openvdb.h>
 #include <openvdb/Grid.h>
 
-namespace quarks
-{
-	namespace forces
-	{
-		enum force_type
-		{
-			UNIFORM_FORCE, DRAG_FORCE, NOISE_FORCE, VORTEX_FORCE, COLLISION_FORCE
-		};
-		struct ForceData
-		{
-			ForceData(force_type type,
-					Scalar amp, DirVec dir,
-					openvdb::VectorGrid::Ptr gridPtr) :
-					type(type),
-					amp(amp),
-					dir(dir),
-					gridPtr(gridPtr)
-			{};
-			force_type type;
-			Scalar amp;
-			DirVec dir;
-			openvdb::VectorGrid::Ptr gridPtr;
-		};
-		typedef std::vector<forces::ForceData> ForceDataVector;
-	} /* namespace forces */
-} /* namespace quarks */
+namespace quarks::forces {
+    enum class ForceType {
+        UNIFORM_FORCE, DRAG_FORCE, NOISE_FORCE, VORTEX_FORCE, VDB_FORCE
+    };
+
+    struct ForceData {
+        ForceData(const ForceType type,
+                  const Scalar amp, const DirVec dir,
+                  const openvdb::VectorGrid::ConstPtr &grid_ptr) : type(type),
+                                                                   amp(amp),
+                                                                   dir(dir),
+                                                                   grid_ptr(grid_ptr) {
+        };
+        ForceType type;
+        Scalar amp;
+        DirVec dir;
+        openvdb::VectorGrid::ConstPtr grid_ptr;
+    };
+
+    using ForceDataVector = std::vector<ForceData>;
+} // namespace quarks::forces
+
 #endif /* FORCEDATA_H_ */
