@@ -19,11 +19,12 @@ namespace quarks {
         void CalculateForce(DirVec &forceA, DirVec &forceB) const {
             const DirVec vecAB = nodeB->position - nodeA->position;
             const Scalar length = vecAB.length();
-            const DirVec stiffness = stiffness_constant * (length - rest_length) * vecAB / length;
+            const Scalar strain_metric = (length - rest_length) / rest_length;
+            const DirVec stiffness = stiffness_constant * strain_metric * vecAB / length;
 
             const DirVec velA = nodeA->velocity;
             const DirVec velB = nodeB->velocity;
-            const DirVec velDiff = velB - velA;
+            const DirVec velDiff = (velB - velA) / rest_length;
             const DirVec damping = damping_constant * velDiff.dot(vecAB) / length * vecAB / length;
 
             forceA = stiffness + damping;
