@@ -42,7 +42,6 @@ private:
     }
 
     fpreal myLastCookTime; // Last cooked time
-    static int *myOffsets;
     quarks::houdini::HQAdapter adapter;
 };
 

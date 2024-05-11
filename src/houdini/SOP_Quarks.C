@@ -28,7 +28,6 @@ PRM_Template SOP_Quarks::myTemplateList[] =
                                                                       &defaultSubSteps),
     PRM_Template(PRM_FLT, 1, &names[2], PRMoneDefaults), PRM_Template(),
 };
-int *SOP_Quarks::myOffsets = nullptr;
 
 OP_Node *
 SOP_Quarks::myConstructor(OP_Network *net, const char *name, OP_Operator *op) {
@@ -36,12 +35,6 @@ SOP_Quarks::myConstructor(OP_Network *net, const char *name, OP_Operator *op) {
 }
 
 SOP_Quarks::SOP_Quarks(OP_Network *net, const char *name, OP_Operator *op) : SOP_Node(net, name, op) {
-    // Make sure that our offsets are allocated.  Here we allow up to 32
-    // parameters, no harm in over allocating.  The definition for this
-    // function is in OP/OP_Parameters.h
-    if (!myOffsets)
-        myOffsets = allocIndirect(32);
-    // Now, flag that nothing has been built yet...
     myLastCookTime = 0;
 }
 
