@@ -60,8 +60,8 @@ namespace quarks::solver {
             soft_body_manager_.ClearSoftBodies();
         }
 
-        void SetCollision(collisions::Collision *coll) {
-            collision_ = coll;
+        void SetCollision(std::unique_ptr<collisions::Collision> coll) {
+            collision_ = std::move(coll);
             is_collision_registered_ = true;
         }
 
@@ -72,7 +72,7 @@ namespace quarks::solver {
     private:
         std::vector<Particle> particles_;
         std::vector<Spring> springs_;
-        collisions::Collision *collision_;
+        std::unique_ptr<collisions::Collision> collision_;
         bool is_collision_registered_;
 
         void SolveStep(int thread_index, int num_threads, Scalar time_step);

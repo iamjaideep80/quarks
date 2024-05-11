@@ -46,9 +46,10 @@ namespace quarks::houdini {
     void HQAdapter::SetCollisions(const GU_Detail *collision) {
         collisions::CollisionDataVector collision_data_vec;
         AttribManager::ExtractCollisionInfo(collision, collision_data_vec);
-        for (const auto &collision_data: collision_data_vec) {
-            quarks_.SetCollision(new collisions::Collision(collision_data));
-        }
+        // Currently only one collision object is supported
+        if (!collision_data_vec.empty()) {
+			quarks_.SetCollision(std::make_unique<collisions::Collision>(collision_data_vec[0]));
+		}
     }
 
     void HQAdapter::StepForward(const fpreal fps, const int sub_steps) {
