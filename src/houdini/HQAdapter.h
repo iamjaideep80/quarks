@@ -33,9 +33,6 @@ namespace quarks::houdini {
         solver::ParticleSystem quarks_;
         GEO_PrimParticle *particle_prim_ptr_;
         GU_Detail *gdp_;
-        GA_RWAttributeRef id_ref_;
-        GA_RWAttributeRef life_ref_;
-        GA_RWAttributeRef vel_ref_;
     };
 } // namespace quarks::houdini
 

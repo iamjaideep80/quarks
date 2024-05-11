@@ -43,14 +43,14 @@ namespace quarks::houdini {
 
     void AttribManager::ExtractSourceInfo(const GU_Detail *source,
                                           sources::SourceDataVector &source_data_vec) {
+        const GA_ROHandleI handle_type(source, GA_ATTRIB_PRIMITIVE, "type");
+        const GA_ROHandleF handle_rate(source, GA_ATTRIB_PRIMITIVE, "rate");
+        const GA_ROHandleF handle_size(source, GA_ATTRIB_PRIMITIVE, "size");
+        const GA_ROHandleV3 handle_pos(source, GA_ATTRIB_PRIMITIVE, "pos");
+        const GA_ROHandleF handle_lifeExpectancy(source, GA_ATTRIB_PRIMITIVE, "lifeExpectancy");
         const GEO_Primitive *prim;
         GA_FOR_ALL_PRIMITIVES(source, prim) {
             const GA_Offset primOffset = prim->getMapOffset();
-            GA_ROHandleI handle_type(source, GA_ATTRIB_PRIMITIVE, "type");
-            GA_ROHandleF handle_rate(source, GA_ATTRIB_PRIMITIVE, "rate");
-            GA_ROHandleF handle_size(source, GA_ATTRIB_PRIMITIVE, "size");
-            GA_ROHandleV3 handle_pos(source, GA_ATTRIB_PRIMITIVE, "pos");
-            GA_ROHandleF handle_lifeExpectancy(source, GA_ATTRIB_PRIMITIVE, "lifeExpectancy");
 
             int type_num(0);
             if (handle_type.isValid())
@@ -92,15 +92,13 @@ namespace quarks::houdini {
 
     void AttribManager::ExtractSoftBodyInfo(const GU_Detail *soft_body_gdp,
                                             sources::SoftBodyDataVector &soft_body_data_vec) {
+        const GA_ROHandleF handle_stiffness_constant(soft_body_gdp, GA_ATTRIB_PRIMITIVE, "spring_constant");
+        const GA_ROHandleF handle_damping_constant(soft_body_gdp, GA_ATTRIB_PRIMITIVE, "damping_constant");
+        const GA_ROHandleI handle_active(soft_body_gdp, GA_ATTRIB_PRIMITIVE, "active");
+        const GA_ROHandleI handle_fixed(soft_body_gdp, GA_ATTRIB_POINT, "fixed");
         const GEO_Primitive *prim;
         GA_FOR_ALL_PRIMITIVES(soft_body_gdp, prim) {
             const GA_Offset primOffset = prim->getMapOffset();
-            GA_ROHandleF handle_stiffness_constant(soft_body_gdp, GA_ATTRIB_PRIMITIVE, "spring_constant");
-            GA_ROHandleF handle_damping_constant(soft_body_gdp, GA_ATTRIB_PRIMITIVE, "damping_constant");
-            GA_ROHandleI handle_active(soft_body_gdp, GA_ATTRIB_PRIMITIVE, "active");
-            GA_ROAttributeRef attRef_fixed = soft_body_gdp->findIntTuple(GA_ATTRIB_POINT, "fixed", 1);
-            const GA_AIFTuple *aifFixed = attRef_fixed.getAIFTuple();
-
             fpreal stiffness_constant(10);
             if (handle_stiffness_constant.isValid())
                 stiffness_constant = handle_stiffness_constant.get(primOffset);
@@ -117,8 +115,8 @@ namespace quarks::houdini {
                 const GA_Offset ptoff = soupPrimPtr->getVertexOffset(i);
                 const PosVec pos = soft_body_gdp->getPos3(ptoff);
                 int fixed(0);
-                if (aifFixed)
-                    aifFixed->get(attRef_fixed.getAttribute(), ptoff, &fixed, 1);
+                if (handle_fixed.isValid())
+                    fixed = handle_fixed.get(ptoff);
                 softBodyData.InsertPoint(pos, fixed);
             }
             for (int i = 0; i < soupPrimPtr->getPolygonCount(); i++) {

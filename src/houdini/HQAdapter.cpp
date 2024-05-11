@@ -58,9 +58,9 @@ namespace quarks::houdini {
     }
 
     void HQAdapter::SyncHoudini(const fpreal fps) const {
-        const GA_AIFTuple *id_ref_tuple = id_ref_.getAIFTuple();
-        const GA_AIFTuple *life_ref_tuple = life_ref_.getAIFTuple();
-        const GA_AIFTuple *vel_ref_tuple = vel_ref_.getAIFTuple();
+        const GA_RWHandleI handle_id(gdp_, GA_ATTRIB_POINT, "id");
+        const GA_RWHandleV2 handle_life(gdp_, GA_ATTRIB_POINT, "life");
+        const GA_RWHandleV3 handle_vel(gdp_, GA_ATTRIB_POINT, "v");
         const auto num_particles = quarks_.GetNumParticles();
         for (GA_Index i = 0; i < num_particles; i++) {
             const Particle &particle = quarks_.GetParticle(i);
@@ -75,18 +75,22 @@ namespace quarks::houdini {
             }
 
             particle_prim_ptr_->getDetail().setPos3(ptoff, particle.position);
-            UT_Vector2R life(particle.life / fps, particle.life_expectancy / fps);
-            id_ref_tuple->set(id_ref_.getAttribute(), ptoff, &particle.id, 1);
-            life_ref_tuple->set(life_ref_.getAttribute(), ptoff, life.data(), 2);
-            vel_ref_tuple->set(vel_ref_.getAttribute(), ptoff, particle.velocity.data(), 3);
+            if (handle_id.isValid())
+                handle_id.set(ptoff, particle.id);
+            if (handle_life.isValid()) {
+                UT_Vector2R life(particle.life / fps, particle.life_expectancy / fps);
+                handle_life.set(ptoff, life);
+            }
+            if (handle_vel.isValid())
+                handle_vel.set(ptoff, particle.velocity);
         }
     }
 
     void HQAdapter::SetGdp(GU_Detail *gdpInput) {
         gdp_ = gdpInput;
         particle_prim_ptr_ = dynamic_cast<GEO_PrimParticle *>(gdp_->appendPrimitive(GEO_PRIMPART));
-        id_ref_ = gdp_->addIntTuple(GA_ATTRIB_POINT, "id", 1);
-        life_ref_ = gdp_->addFloatTuple(GA_ATTRIB_POINT, "life", 2);
-        vel_ref_ = gdp_->addFloatTuple(GA_ATTRIB_POINT, "v", 3);
+        gdp_->addIntTuple(GA_ATTRIB_POINT, "id", 1);
+        gdp_->addFloatTuple(GA_ATTRIB_POINT, "life", 2);
+        gdp_->addFloatTuple(GA_ATTRIB_POINT, "v", 3);
     }
 } // namespace quarks::houdini
