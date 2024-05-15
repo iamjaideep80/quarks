@@ -7,10 +7,9 @@ namespace quarks::sources {
     public:
         SphereSource(Scalar rate, PosVec pos, Scalar size, Scalar lifeExpectancy);
 
-        virtual ~SphereSource() {
-        };
+        ~SphereSource() override = default;
 
-        std::vector<PosVec> RequestPositions(unsigned int time);
+        std::vector<PosVec> RequestPositions(unsigned int time) override;
 
     private:
         PosVec pos_;

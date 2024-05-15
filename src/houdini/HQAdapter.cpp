@@ -48,8 +48,8 @@ namespace quarks::houdini {
         AttribManager::ExtractCollisionInfo(collision, collision_data_vec);
         // Currently only one collision object is supported
         if (!collision_data_vec.empty()) {
-			quarks_.SetCollision(std::make_unique<collisions::Collision>(collision_data_vec[0]));
-		}
+            quarks_.SetCollision(std::make_unique<collisions::Collision>(collision_data_vec[0]));
+        }
     }
 
     void HQAdapter::StepForward(const fpreal fps, const int sub_steps) {
@@ -59,7 +59,7 @@ namespace quarks::houdini {
     }
 
     void HQAdapter::SyncHoudini(const fpreal fps) const {
-        const GA_RWHandleI handle_id(gdp_, GA_ATTRIB_POINT, "id");
+        const GA_RWHandleID handle_id(gdp_, GA_ATTRIB_POINT, "id");
         const GA_RWHandleV2 handle_life(gdp_, GA_ATTRIB_POINT, "life");
         const GA_RWHandleV3 handle_vel(gdp_, GA_ATTRIB_POINT, "v");
         const auto num_particles = quarks_.GetNumParticles();

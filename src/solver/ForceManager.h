@@ -15,7 +15,7 @@ namespace quarks::solver {
 
         virtual ~ForceManager() = default;
 
-        void AddForce(forces::ForcePtr ptr) {
+        void AddForce(const forces::ForcePtr &ptr) {
             forces_.push_back(ptr);
         };
 

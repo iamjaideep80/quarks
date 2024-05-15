@@ -124,7 +124,7 @@ namespace quarks::houdini {
                 const GA_Offset vtxoff_2 = soupPrimPtr->getPolygonVertexOffset(i, 1);
                 const GA_Offset ptoff_1 = soupPrimPtr->getPointOffset(vtxoff_1);
                 const GA_Offset ptoff_2 = soupPrimPtr->getPointOffset(vtxoff_2);
-                softBodyData.InsertSpring(ptoff_1, ptoff_2);
+                softBodyData.InsertSpring(static_cast<int>(ptoff_1), static_cast<int>(ptoff_2));
             }
             soft_body_data_vec.push_back(softBodyData);
         }

@@ -11,7 +11,7 @@ namespace quarks::forces {
 
     struct ForceData {
         ForceData(const ForceType type,
-                  const Scalar amp, const DirVec dir,
+                  const Scalar amp, const DirVec &dir,
                   const openvdb::VectorGrid::ConstPtr &grid_ptr) : type(type),
                                                                    amp(amp),
                                                                    dir(dir),

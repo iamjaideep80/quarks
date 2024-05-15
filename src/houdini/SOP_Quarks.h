@@ -10,7 +10,7 @@ public:
 
     ~SOP_Quarks() override = default;
 
-    static PRM_Template myTemplateList[];
+    static PRM_Template template_list[];
 
     static OP_Node *myConstructor(OP_Network *, const char *, OP_Operator *);
 
@@ -41,8 +41,8 @@ private:
         return evalFloat("sim_time_scale", 0, 0);
     }
 
-    fpreal myLastCookTime; // Last cooked time
-    quarks::houdini::HQAdapter adapter;
+    fpreal last_cook_time_; // Last cooked time
+    quarks::houdini::HQAdapter adapter_;
 };
 
 #endif

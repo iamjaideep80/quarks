@@ -7,10 +7,6 @@ namespace quarks::sources {
         type_ = SourceType::VDB_SOURCE;
     }
 
-    VDB_Source::~VDB_Source() {
-        // TODO Auto-generated destructor stub
-    }
-
     struct PointList {
         struct Point {
             double x, y, z;

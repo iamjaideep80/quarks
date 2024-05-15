@@ -5,7 +5,7 @@
 namespace quarks::forces {
     class Uniform_Force : public Force {
     public:
-        Uniform_Force(const Scalar amp, const DirVec dir): amplitude_(amp), direction_(dir) {
+        Uniform_Force(const Scalar amp, const DirVec &dir): amplitude_(amp), direction_(dir) {
         }
 
         ~Uniform_Force() override = default;

@@ -11,9 +11,9 @@ namespace quarks::sources {
     public:
         VDB_Source(Scalar rate, openvdb::FloatGrid::ConstPtr ptr, Scalar lifeExpectancy);
 
-        virtual ~VDB_Source();
+        ~VDB_Source() override = default;
 
-        std::vector<PosVec> RequestPositions(unsigned int time);
+        std::vector<PosVec> RequestPositions(unsigned int time) override;
 
     private:
         openvdb::FloatGrid::ConstPtr grid_ptr_;

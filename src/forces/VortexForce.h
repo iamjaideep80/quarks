@@ -5,7 +5,7 @@
 namespace quarks::forces {
     class Vortex_Force : public Force {
     public:
-        Vortex_Force(const Scalar amp, const DirVec dir) : amplitude_(amp), direction_(dir) {
+        Vortex_Force(const Scalar amp, const DirVec &dir) : amplitude_(amp), direction_(dir) {
         }
 
         ~Vortex_Force() override = default;

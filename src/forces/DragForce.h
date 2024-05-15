@@ -5,7 +5,7 @@
 namespace quarks::forces {
     class Drag_Force : public Force {
     public:
-        explicit Drag_Force(Scalar amp) {
+        explicit Drag_Force(const Scalar amp) {
             amplitude = amp;
         }
 
