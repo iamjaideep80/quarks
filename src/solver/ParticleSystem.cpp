@@ -43,6 +43,10 @@ namespace quarks::solver {
     }
 
     void ParticleSystem::SolveStep(const int thread_index, const int num_threads, const Scalar time_step) {
+
+        // Each thread will solve the ODE for a subset of particles which are
+        // separated by num_threads. Thus all the threads will solve the ODE
+        // for all the particles in the system.
         for (int i = thread_index; i < particles_.size(); i += num_threads) {
             Particle &particle = particles_[i];
             if (particle.life > particle.life_expectancy) {
@@ -57,6 +61,7 @@ namespace quarks::solver {
             PosVec new_pos;
             DirVec new_vel;
 
+            // If the particle is fixed, we don't need to solve the ODE for it.
             if (particle.is_fixed) {
                 new_pos = soft_body_manager_.GetConstraintPos(particle.soft_body_source_num,
                                                               particle.soft_body_point_num);

@@ -69,6 +69,8 @@ namespace quarks::houdini {
             if (particle.life > particle.life_expectancy) {
                 continue;
             }
+
+            // Use existing GU_Detail point if it exists, otherwise create a new one
             if (particle_prim_ptr_->getNumParticles() < (i + 1)) {
                 ptoff = particle_prim_ptr_->giveBirth();
             } else {

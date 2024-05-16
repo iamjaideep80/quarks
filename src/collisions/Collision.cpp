@@ -20,6 +20,8 @@ namespace quarks::collisions {
                                  new_pos.z() / grid_ptr_->voxelSize().z());
         float sdf_val;
         openvdb::tools::PointSampler::sample(grid_ptr_->tree(), ijk, sdf_val);
+
+        // If the particle has crossed the outer iso surface, we need to apply a collision response velocity
         if (sdf_val < outer_iso_val_) {
             const openvdb::Coord xyz(ijk.x(), ijk.y(), ijk.z());
             openvdb::math::Vec3d grad_val = openvdb::math::ISGradient<openvdb::math::CD_2ND>::result(
@@ -34,6 +36,8 @@ namespace quarks::collisions {
             tangent_comp = tangent_comp * gain_tangent_;
             new_vel = response_normal_comp + tangent_comp;
         }
+
+        // If the particle is inside the inner iso surface, we need to reset the position
         if (constexpr Scalar inner_iso_val = 0; sdf_val < inner_iso_val) {
             new_pos = old_pos;
         }

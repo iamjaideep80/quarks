@@ -68,6 +68,7 @@ namespace quarks::houdini {
             if (handle_lifeExpectancy.isValid())
                 lifeExpectancy = handle_lifeExpectancy.get(primOffset);
 
+            // Only VDB sources have a grid
             if (const auto *vdb_prim = dynamic_cast<const GU_PrimVDB *>(prim);
                 vdb_prim && static_cast<sources::SourceType>(type_num) == sources::SourceType::VDB_SOURCE) {
                 openvdb::FloatGrid::ConstPtr grid_ptr_;
@@ -97,6 +98,8 @@ namespace quarks::houdini {
         const GA_ROHandleI handle_active(soft_body_gdp, GA_ATTRIB_PRIMITIVE, "active");
         const GA_ROHandleI handle_fixed(soft_body_gdp, GA_ATTRIB_POINT, "fixed");
         const GEO_Primitive *prim;
+
+        // Loop through all soft body primitives
         GA_FOR_ALL_PRIMITIVES(soft_body_gdp, prim) {
             const GA_Offset primOffset = prim->getMapOffset();
             fpreal stiffness_constant(10);
@@ -111,6 +114,7 @@ namespace quarks::houdini {
             sources::SoftBodyData softBodyData(stiffness_constant, damping_constant, active);
 
             const auto *soupPrimPtr = dynamic_cast<const GU_PrimPolySoup *>(prim);
+            // Create points
             for (int i = 0; i < soupPrimPtr->getVertexCount(); i++) {
                 const GA_Offset ptoff = soupPrimPtr->getVertexOffset(i);
                 const PosVec pos = soft_body_gdp->getPos3(ptoff);
@@ -119,6 +123,7 @@ namespace quarks::houdini {
                     fixed = handle_fixed.get(ptoff);
                 softBodyData.InsertPoint(pos, fixed);
             }
+            // Create springs between points
             for (int i = 0; i < soupPrimPtr->getPolygonCount(); i++) {
                 const GA_Offset vtxoff_1 = soupPrimPtr->getPolygonVertexOffset(i, 0);
                 const GA_Offset vtxoff_2 = soupPrimPtr->getPolygonVertexOffset(i, 1);

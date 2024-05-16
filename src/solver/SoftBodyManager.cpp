@@ -11,6 +11,7 @@ namespace quarks::solver {
             std::vector<PosVec> positions = src_ptr->RequestPositions(time);
             std::vector<bool> fixPoints = src_ptr->RequestFixPoints(time);
             std::vector<Particle *> source_particles;
+            // Create particles
             for (int pointNum = 0; pointNum < src_ptr->GetBirthRate(); pointNum++) {
                 PosVec initPos(positions[pointNum][0], positions[pointNum][1], positions[pointNum][2]);
                 Scalar initLifeExpectancy = src_ptr->GetLifeExpectancy();
@@ -20,6 +21,7 @@ namespace quarks::solver {
                 max_id_++;
             }
             SpringMap springMap = src_ptr->RequestSpringMap(time);
+            // Create springs
             for (const auto &[first, second]: springMap) {
                 Particle *nodeA = source_particles[first];
                 Particle *nodeB = source_particles[second];
